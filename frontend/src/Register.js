@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import './lpstyle.css'; // Assuming you will create this CSS file
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
-
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:8080/login', {
+      const response = await fetch('http://localhost:8080/register', { // Adjusted endpoint
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,57 +34,65 @@ const Register = () => {
     }
   };
 
+  const handleSignIn = () => {
+    navigate('/Login');
+  };
+
   return (
-    <div>
-      <header>
-        <div>
-          <div onClick={toggleDropdown}>
-            <div className={` ${dropdownOpen ? 'dropdown-open' : ''}`}>
-            </div>
-          </div>
-        </div>
+    <div className="lp-container">
+      <header className="lp-header">
+        <div className="lp-logo">Chrono Craft</div>
+        <nav className="lp-navigation">
+          <Link to="/" className="lp-link">Home</Link>
+          <Link to="/about" className="lp-link">About</Link>
+          <Link to="/service" className="lp-link">Service</Link>
+          <Link to="/contact-us" className="lp-link">Contact Us</Link>
+          <Link to="/faq" className="lp-link">FAQ</Link>
+        </nav>
+        <button onClick={handleSignIn} className="lp-get-started-btn">SIGN IN</button>
       </header>
-      <div>
-        <div>
-          <div>
-            <h2>Register</h2>
-            <form onSubmit={handleSubmit}>
-              <div>
-                <label htmlFor="username">Username:</label>
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="email">Email:</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="password">Password:</label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
-              <button type="submit">Register</button>
-            </form>
-          </div>
+      <div className="register-main-content">
+        <div className="register-container">
+          <h2 className="register-title">Register</h2>
+          <form className="register-form" onSubmit={handleSubmit}>
+            <div className="register-form-group">
+              <label htmlFor="username" className="register-label">Username:</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="register-input"
+                required
+              />
+            </div>
+            <div className="register-form-group">
+              <label htmlFor="email" className="register-label">Email:</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="register-input"
+                required
+              />
+            </div>
+            <div className="register-form-group">
+              <label htmlFor="password" className="register-label">Password:</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="register-input"
+                required
+              />
+            </div>
+            <button type="submit" className="register-submit-btn">Register</button>
+          </form>
         </div>
       </div>
     </div>

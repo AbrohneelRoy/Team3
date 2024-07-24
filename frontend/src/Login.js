@@ -1,81 +1,96 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import './lpstyle.css'; // Assuming styles are defined in this CSS file
 
 const Login = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const navigate = useNavigate();
-  
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-  
-      try {
-        const response = await fetch('http://localhost:8080/login/check', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ username, password }),
-        });
-  
-        if (!response.ok) {
-          if (response.status === 401) {
-            alert('Login failed: Invalid username or password.');
-          } else {
-            alert(`Login failed: Server responded with status ${response.status}.`);
-          }
-          return;
-        }
-  
-        const result = await response.json();
-        if (result.success) {
-          localStorage.setItem('username', username);
-          navigate('/Dashboard');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch('http://localhost:8080/login/check', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          alert('Login failed: Invalid username or password.');
         } else {
-          alert('Login failed: ' + result.message);
+          alert(`Login failed: Server responded with status ${response.status}.`);
         }
-      } catch (error) {
-        console.error('Error during fetch:', error);
-        alert('Login failed: Network error or server not responding.');
+        return;
       }
-    };
-  
-    return (
-      <div >
-        <div >
-          <div >
-            <div >
-              <h2>Login</h2>
-              <form  onSubmit={handleSubmit}>
-                <div >
-                  <label htmlFor="username">Username:</label>
-                  <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                  />
-                </div>
-                <div >
-                  <label htmlFor="password">Password:</label>
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </div>
-                <button type="submit" >Login</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+
+      const result = await response.json();
+      if (result.success) {
+        localStorage.setItem('username', username);
+        navigate('/Dashboard');
+      } else {
+        alert('Login failed: ' + result.message);
+      }
+    } catch (error) {
+      console.error('Error during fetch:', error);
+      alert('Login failed: Network error or server not responding.');
+    }
   };
-  
-  export default Login;
+  const handleSignUp = () => {
+    navigate('/Register');
+  };
+
+  return (
+    <div className="lp-container">
+      <header className="lp-header">
+        <div className="lp-logo">Chrono Craft</div>
+        <nav className="lp-navigation">
+          <Link to="/" className="lp-link">Home</Link>
+          <Link to="/about" className="lp-link">About</Link>
+          <Link to="/service" className="lp-link">Service</Link>
+          <Link to="/contact-us" className="lp-link">Contact Us</Link>
+          <Link to="/faq" className="lp-link">FAQ</Link>
+        </nav>
+        <button onClick={handleSignUp} className="lp-get-started-btn">SIGN UP</button>
+      </header>
+      <main className="lp-main-content">
+        <div className="login-container">
+          <h2 className="login-title">Login</h2>
+          <form className="login-form" onSubmit={handleSubmit}>
+            <div className="login-form-group">
+              <label htmlFor="username" className="login-label">Username:</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="login-input"
+                required
+              />
+            </div>
+            <div className="login-form-group">
+              <label htmlFor="password" className="login-label">Password:</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="login-input"
+                required
+              />
+            </div>
+            <button type="submit" className="login-submit-btn">Login</button>
+          </form>
+        </div>
+      </main>
+    </div>
+  );
+};
+
+export default Login;
