@@ -10,7 +10,7 @@ const Login = () => {
       event.preventDefault();
   
       try {
-        const response = await fetch('http://172.19.75.191:8080/login/check', {
+        const response = await fetch('http://localhost:8080/login/check', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

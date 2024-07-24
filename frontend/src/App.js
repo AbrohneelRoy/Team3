@@ -12,19 +12,12 @@ function App() {
       <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/Register" element={<Register />} />
         <Route
           path="/Dashboard"
           element={
             <AuthGuard>
               <Dashboard />
-            </AuthGuard>
-          }
-        />
-        <Route
-          path="/Register"
-          element={
-            <AuthGuard>
-              <Register />
             </AuthGuard>
           }
         />

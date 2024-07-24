@@ -7,26 +7,16 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
-  const loggedInUser = localStorage.getItem('username');
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
-  };
-
-  const handleDash = () => {
-    navigate('/Dashboard');
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('username');
-    navigate('/Login', { replace: true });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://172.19.75.191:8080/login', {
+      const response = await fetch('http://localhost:8080/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,6 +28,7 @@ const Register = () => {
 
       if (response.ok) {
         alert(data.message);
+        navigate('/Login');
       } else {
         alert(data.message);
       }
@@ -52,10 +43,7 @@ const Register = () => {
       <header>
         <div>
           <div onClick={toggleDropdown}>
-            {loggedInUser}
             <div className={` ${dropdownOpen ? 'dropdown-open' : ''}`}>
-              <button onClick={handleDash}>Dashboard</button>
-              <button onClick={handleLogout}>Logout</button>
             </div>
           </div>
         </div>
