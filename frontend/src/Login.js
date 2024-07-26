@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import './lpstyle.css'; // Assuming styles are defined in this CSS file
+import './lpstyle.css'; 
+import loimg from './loginimg.png'; 
+
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -59,6 +61,10 @@ const Login = () => {
       </header>
       <main className="lp-main-content">
         <div className="login-container">
+          <div classname="login-left">
+        <img src={loimg} alt="Landing Page" className="lo-image" />
+        </div>
+        <div className="login right">
           <h2 className="login-title">Login</h2>
           <form className="login-form" onSubmit={handleSubmit}>
             <div className="login-form-group">
@@ -87,6 +93,7 @@ const Login = () => {
             </div>
             <button type="submit" className="login-submit-btn">Login</button>
           </form>
+          </div>
         </div>
       </main>
     </div>

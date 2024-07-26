@@ -1,0 +1,151 @@
+/* Dashboard Container */
+.db-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+/* Header Styling */
+.db-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2c3e50;
+    padding: 15px 30px;
+    color: #18bc9c;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    border-bottom: 3px solid #18bc9c;
+}
+
+.db-logo {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.db-user {
+    position: relative;
+    cursor: pointer;
+    font-size: 25px;
+}
+
+.db-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #2c3e50;
+    border: 1px solid #18bc9c;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.db-dropdown-item {
+    display: block;
+    padding: 10px 20px;
+    color: #18bc9c;
+    background: none;
+    border: none;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+}
+
+.db-dropdown-item:hover {
+    background-color: #18bc9c;
+    color: #2c3e50;
+    border: 1px solid #2c3e50;
+    border-radius: 5px;
+}
+
+/* Main Layout */
+.db-main {
+    display: flex;
+    flex: 1;
+    background-color: #d5e8e5; /* Slightly greenish background */
+}
+
+.db-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    background-color: #2c3e50;
+    padding: 20px 0;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    border-right: 3px solid #18bc9c;
+}
+
+.db-nav-button {
+    background-color: #2c3e50;
+    color: #18bc9c;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    margin: 10px;
+    padding: 15px 20px;
+    text-align: left;
+    width: calc(100% - 40px); 
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+}
+
+.db-nav-button.active {
+    background-color: #18bc9c;
+    color: #2c3e50;
+    border: 2px solid #2c3e50;
+}
+
+.db-nav-button:hover {
+    background-color: #18bc9c;
+    color: #2c3e50;
+    border: 2px solid #2c3e50;
+    transform: translateX(10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.db-nav-icon {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    transition: fill 0.3s ease-in-out;
+}
+
+.db-nav-button:hover .db-nav-icon {
+    fill: #2c3e50;
+}
+
+/* Adding an animation for buttons */
+@keyframes buttonHover {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(10px);
+    }
+}
+
+.db-nav-button:hover {
+    animation: buttonHover 0.3s forwards;
+}
+
+/* Content Styling */
+.db-content {
+    flex: 1;
+    padding: 30px;
+    background-color: #e0f2ef;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.db-content h1 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.db-content p {
+    font-size: 1.2em;
+    line-height: 1.6;
+    color: #7f8c8d;
+}

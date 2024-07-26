@@ -18,11 +18,10 @@ const LandingPage = () => {
       <header className="lp-header">
         <div className="lp-logo">Chrono Craft</div>
         <nav className="lp-navigation">
-          <Link to="/" className="lp-link">Home</Link>
-          <Link to="/about" className="lp-link">About</Link>
-          <Link to="/service" className="lp-link">Service</Link>
-          <Link to="/contact-us" className="lp-link">Contact Us</Link>
-          <Link to="/faq" className="lp-link">FAQ</Link>
+          <Link to="/about" className="lp2-link">About</Link>
+          <Link to="/service" className="lp2-link">Service</Link>
+          <Link to="/contact-us" className="lp2-link">Contact Us</Link>
+          <Link to="/faq" className="lp2-link">FAQ</Link>
         </nav>
         <button onClick={handleGetStarted} className="lp-get-started-btn">GET STARTED</button>
       </header>

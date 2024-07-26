@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './lpstyle.css'; // Assuming you will create this CSS file
+import reimg from './reg.png'; // Assuming the image is in the same directory
+
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -12,7 +14,7 @@ const Register = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:8080/register', { // Adjusted endpoint
+      const response = await fetch('http://localhost:8080/login', { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,6 +55,8 @@ const Register = () => {
       </header>
       <div className="register-main-content">
         <div className="register-container">
+          
+          <div className="login right">
           <h2 className="register-title">Register</h2>
           <form className="register-form" onSubmit={handleSubmit}>
             <div className="register-form-group">
@@ -93,6 +97,10 @@ const Register = () => {
             </div>
             <button type="submit" className="register-submit-btn">Register</button>
           </form>
+          </div>
+          <div classname="login-left">
+          <img src={reimg} alt="Landing Page" className="re-image" />
+          </div>
         </div>
       </div>
     </div>
