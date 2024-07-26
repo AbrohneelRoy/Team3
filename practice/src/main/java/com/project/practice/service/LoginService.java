@@ -1,15 +1,12 @@
 package com.project.practice.service;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.project.practice.model.Login;
 import com.project.practice.repository.LoginRepository;
 
 import java.util.List;
 import java.util.Optional;
-
 
 @Service
 public class LoginService {
