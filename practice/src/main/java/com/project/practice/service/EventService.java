@@ -50,6 +50,16 @@ public class EventService {
     }
 
     /**
+     * Saves multiple events to the database.
+     * 
+     * @param events The list of events to save.
+     * @return The list of saved events.
+     */
+    public List<Event> saveEvents(List<Event> events) {
+        return eventRepository.saveAll(events);
+    }
+
+    /**
      * Deletes an event by its ID.
      * 
      * @param id The ID of the event to delete.
