@@ -90,6 +90,8 @@
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
+    border-color: #18bc9c;
+
 }
 
 .task-nav-button:hover {
@@ -104,7 +106,6 @@
     background-color: #18bc9c;
     color: #2c3e50;
     border: 2px solid #2c3e50;
-
 }
 
 .task-nav-icon {
@@ -115,7 +116,7 @@
 }
 
 .task-nav-button:hover .task-nav-icon {
-    fill: #2c3e50
+    fill: #2c3e50;
 }
 
 /* Adding an animation for buttons */
@@ -132,21 +133,231 @@
     animation: buttonHover 0.3s forwards;
 }
 
-/* Content Styling */
+
+
+
+/* Task Content */
 .task-content {
     flex: 1;
-    padding: 30px;
-    background-color: #e0f2ef;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    background-color: #f4f6f8;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.task-content h1 {
+/* Task Input Container */
+.task-input-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+}
+
+/* Task Input */
+.task-input {
+    flex: 1;
+    padding: 0.75rem;
+    margin-right: 1rem;
+    border: 1px solid #ccd1d9;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+/* Task Important Label */
+.task-important-label {
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+    font-size: 1rem;
     color: #2c3e50;
-    margin-bottom: 20px;
 }
 
-.task-content p {
-    font-size: 1.2em;
-    line-height: 1.6;
-    color: #7f8c8d;
+/* Task Add Button */
+.task-add-button {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem; /* Smaller padding */
+    background-color: #1abc9c;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.875rem; /* Slightly smaller font size */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Task Add Button Hover */
+.task-add-button:hover {
+    background-color: #16a085;
+    transform: scale(1.05); /* Slight scale effect on hover */
+}
+
+/* Floating Add Button */
+.floating-add-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    background-color: #1abc9c;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+
+/* Floating Add Button Hover */
+.floating-add-button:hover {
+    background-color: #16a085;
+    transform: scale(1.1); /* Slight scale effect on hover */
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+}
+
+/* Floating Add Button Click */
+.floating-add-button:active {
+    background-color: #148f77;
+    transform: scale(1.05); /* Slightly smaller scale effect on click */
+}
+
+.important-checkbox {
+    width: 1.2rem;
+    height: 1.2rem;
+    accent-color: #1abc9c; /* Color of the checked state */
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.important-checkbox:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(26, 188, 156, 0.4); /* Focus outline */
+}
+/* Task List */
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* Task List Item */
+.task-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem; /* Slightly smaller padding */
+    background-color: #ffffff;
+    border: 1px solid #dce1e7;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+
+/* Task List Item Hover */
+.task-list-item:hover {
+    background-color: #f4f6f8;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: scale(1.02); /* Slight scale effect on hover */
+}
+
+/* Task Edit Input */
+.task-edit-input {
+    flex: 1;
+    margin-right: 1rem;
+    padding: 0.75rem;
+    border: 1px solid #ccd1d9;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+/* Task Actions */
+.task-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Task Complete Checkbox */
+.task-checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+}
+
+.task-checkbox {
+    width: 1rem;
+    height: 1rem;
+    accent-color: #1abc9c; /* Color of the checked state */
+    cursor: pointer;
+}
+
+.task-checkbox:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(26, 188, 156, 0.4); /* Focus outline */
+}
+
+/* Task Important Checkbox */
+.task-important-label input {
+    margin-right: 0.5rem;
+}
+
+/* Save Button */
+.task-save-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem; /* Smaller padding */
+    background-color: #1abc9c;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.875rem; /* Slightly smaller font size */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-right: 0.5rem;
+}
+
+/* Save Button Hover */
+.task-save-button:hover {
+    background-color: #16a085;
+    transform: scale(1.05); /* Slight scale effect on hover */
+}
+
+/* Cancel Button */
+.task-cancel-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem; /* Smaller padding */
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.875rem; /* Slightly smaller font size */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Cancel Button Hover */
+.task-cancel-button:hover {
+    background-color: #c0392b;
+    transform: scale(1.05); /* Slight scale effect on hover */
+}
+
+/* Button Container */
+.task-edit-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Fade Out */
+.fade-out {
+    opacity: 0;
+    transition: opacity 3s; /* Smooth fade-out animation */
 }

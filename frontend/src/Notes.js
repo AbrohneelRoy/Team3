@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import './Dashboard.css'; // Reusing the same CSS file for consistent styling
+import axios from 'axios';
+import './Dashboard.css';
 import './Notes.css';
 import nav1 from './home.png';
 import nav11 from './homehover.png';
@@ -15,9 +16,37 @@ import nav66 from './logouthover.png';
 
 const Notes = () => {
   const [hovered, setHovered] = useState(null);
+  const [notes, setNotes] = useState([]);
+  const [newNote, setNewNote] = useState({ title: '', content: '' });
+  const [userId, setUserId] = useState(null);
+  const [showForm, setShowForm] = useState(false);
+  const [editingNote, setEditingNote] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const loggedInUser = localStorage.getItem('username');
+
+  const fetchUserInfo = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/login');
+      const currentUser = response.data.find(user => user.username === loggedInUser);
+      if (currentUser) {
+        setUserId(currentUser.id);
+      } else {
+        console.error('User not found in API response');
+      }
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+    }
+  };
+
+  const fetchNotes = async (userId) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/notes/${userId}`);
+      setNotes(response.data);
+    } catch (error) {
+      console.error('Error fetching notes:', error);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('username');
@@ -37,6 +66,69 @@ const Notes = () => {
   };
 
   const isActive = (path) => location.pathname === path;
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewNote({
+      ...newNote,
+      [name]: value
+    });
+  };
+
+  const handleAddNote = async (e) => {
+    e.preventDefault();
+    if (newNote.title && newNote.content && userId) {
+      try {
+        if (editingNote) {
+          // Update existing note
+          await axios.put(`http://localhost:8080/api/notes/${editingNote.id}`, {
+            userId: userId,
+            title: newNote.title,
+            notes: newNote.content
+          });
+        } else {
+          // Add new note
+          await axios.post('http://localhost:8080/api/notes', {
+            userId,
+            title: newNote.title,
+            notes: newNote.content
+          });
+        }
+        setNewNote({ title: '', content: '' });
+        setShowForm(false);
+        setEditingNote(null);
+        fetchNotes(userId); // Refresh notes list
+      } catch (error) {
+        console.error('Error saving note:', error);
+      }
+    }
+  };
+
+  const handleEditNote = (note) => {
+    setNewNote({
+      title: note.title,
+      content: note.notes // Ensure we're using the correct key to populate the content
+    });
+    setEditingNote(note);
+    setShowForm(true);
+  };
+
+  const handleDeleteNote = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8080/api/notes/${id}`);
+      fetchNotes(userId); // Refresh notes list
+    } catch (error) {
+      console.error('Error deleting note:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserInfo().then(() => {
+      if (userId) {
+        fetchNotes(userId); // Fetch notes after userId is set
+      }
+    });
+  }, [loggedInUser, userId]);
 
   return (
     <div className="no-container">
@@ -60,7 +152,7 @@ const Notes = () => {
             onMouseLeave={() => setHovered(null)}
             onClick={routeToCalendar}
           >
-            <img src={hovered === 'calendar' || isActive('/Dalendar') ? nav22 : nav2} alt="Calendar" className="no-nav-icon" /> Calendar
+            <img src={hovered === 'calendar' || isActive('/Calendar') ? nav22 : nav2} alt="Calendar" className="no-nav-icon" /> Calendar
           </button>
           <button
             className={`no-nav-button ${isActive('/Task') ? 'active' : ''}`}
@@ -89,6 +181,41 @@ const Notes = () => {
         <div className="no-content">
           <h1>Notes Management</h1>
           <p>Here you can manage your notes. Use the sidebar to navigate to different sections.</p>
+          {showForm && (
+            <form onSubmit={handleAddNote} className="note-form">
+              <input
+                type="text"
+                name="title"
+                value={newNote.title}
+                onChange={handleInputChange}
+                placeholder="Note Title"
+                className="note-input"
+                required
+              />
+              <textarea
+                name="content"
+                value={newNote.content}
+                onChange={handleInputChange}
+                placeholder="Note Content"
+                className="note-textarea"
+                required
+              />
+              <button type="submit" className="note-submit">{editingNote ? 'Update Note' : 'Add Note'}</button>
+            </form>
+          )}
+          <div className="note-list">
+            {notes.map(note => (
+              <div key={note.id} className="note-item">
+                <h2 className="note-title">{note.title}</h2>
+                <p className="note-content">{note.notes}</p> {/* Ensure we're displaying the correct key */}
+                <button onClick={() => handleEditNote(note)} className="note-edit-button">Edit</button>
+                <button onClick={() => handleDeleteNote(note.id)} className="note-delete-button">Delete</button>
+              </div>
+            ))}
+          </div>
+          <button className="note-float-button" onClick={() => setShowForm(!showForm)}>
+            {showForm ? '-' : '+'}
+          </button>
         </div>
       </div>
     </div>
