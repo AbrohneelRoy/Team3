@@ -11,8 +11,12 @@ import nav3 from './task.png';
 import nav33 from './taskhoover.png';
 import nav4 from './note.png';
 import nav44 from './notehover.png';
+import nav5 from './timer.png';
+import nav55 from './timerhover.png';
 import nav6 from './logout.png';
 import nav66 from './logouthover.png';
+import nav7 from './gpt.png';
+import nav77 from './gpthover.png';
 
 const Notes = () => {
   const [hovered, setHovered] = useState(null);
@@ -61,8 +65,16 @@ const Notes = () => {
     navigate('/Calendar');
   };
 
+  const routeGPT = () => {
+    navigate('/AIScheduler');
+  };
+
   const routeToTask = () => {
     navigate('/Task');
+  };
+
+  const routeTime = () => {
+    navigate('/Timer');
   };
 
   const isActive = (path) => location.pathname === path;
@@ -168,6 +180,22 @@ const Notes = () => {
             onMouseLeave={() => setHovered(null)}
           >
             <img src={hovered === 'note' || isActive('/Notes') ? nav44 : nav4} alt="Notes" className="no-nav-icon" /> Notes
+          </button>
+          <button
+            className={`db-nav-button ${isActive('/Timer') ? 'active' : ''}`}
+            onMouseEnter={() => setHovered('time')}
+            onMouseLeave={() => setHovered(null)}
+            onClick={routeTime}
+          >
+            <img src={hovered === 'time' || isActive('/Timer') ? nav55 : nav5} alt="Timer" className="db-nav-icon" />Pomodoro Timer
+          </button>
+          <button
+            className={`db-nav-button ${isActive('/AIScheduler') ? 'active' : ''}`}
+            onMouseEnter={() => setHovered('gpt')}
+            onMouseLeave={() => setHovered(null)}
+            onClick={routeGPT}
+          >
+            <img src={hovered === 'gpt' || isActive('/AIScheduler') ? nav77 : nav7} alt="AIScheduler" className="db-nav-icon" />AIScheduler
           </button>
           <button
             className={`no-nav-button ${isActive('/logout') ? 'active' : ''}`}

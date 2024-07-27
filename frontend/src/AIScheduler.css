@@ -1,0 +1,201 @@
+/* AI Scheduler Container */
+.ai-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+/* Header Styling (similar to Timer) */
+.ai-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2c3e50;
+    padding: 15px 30px;
+    color: #18bc9c;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    border-bottom: 3px solid #18bc9c;
+}
+
+.ai-logo {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+/* Main Container */
+.ai-main {
+    display: flex;
+    flex: 1;
+    background-color: #d5e8e5;
+}
+
+.ai-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    background-color: #2c3e50;
+    padding: 20px 0;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    border-right: 3px solid #18bc9c;
+}
+
+.ai-nav-button {
+    background-color: #2c3e50;
+    color: #18bc9c;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    margin: 10px;
+    padding: 15px 20px;
+    text-align: left;
+    width: calc(100% - 40px);
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    border-color: #18bc9c;
+}
+
+.ai-nav-button:hover {
+    background-color: #18bc9c;
+    color: #2c3e50;
+    border: 2px solid #2c3e50;
+    transform: translateX(10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.ai-nav-icon {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    transition: filter 0.3s ease-in-out;
+}
+
+.ai-nav-button:hover .ai-nav-icon {
+    fill: #2c3e50;
+}
+
+.ai-nav-button.active {
+    background-color: #18bc9c;
+    color: #2c3e50;
+    border: 2px solid #2c3e50;
+}
+
+.ai-username {
+    font-size: 25px;
+}
+
+
+
+
+/* Main Content Styling */
+.ai-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 70px;
+    align-items: center;
+    justify-content: center;
+    margin-top: -80px; /* Adjust as needed */
+    padding: 40px; /* Adjust as needed */
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* Prompt Container */
+.ai-prompt-container {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    width: calc(100% - 120px); /* Adjust width to make space for the generate button */
+    max-width: 820px;
+    height: 50px;
+    border: 3px solid #18bc9c;
+    border-radius: 29px;
+    overflow: hidden;
+    background-color: #2c3e50;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.4s ease-in-out, box-shadow 0.4s ease-in-out, transform 0.4s ease-in-out;
+}
+
+/* Hover Effect with Smooth Rise */
+.ai-prompt-container:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2), 0 0 20px rgba(24, 188, 156, 0.7);
+}
+
+/* Prompt Input */
+.ai-prompt-input {
+    flex: 1;
+    padding: 12px 20px;
+    font-size: 1em;
+    margin-bottom: -17px;
+    border: none;
+    outline: none;
+    background: none;
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 9px;
+    background-color: #2c3e50; /* Matches the container background */
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+/* Microphone Button */
+.ai-mic-button {
+    background-color: #2c3e50;
+    border: 2px solid #18bc9c;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out, border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.ai-mic-button img {
+    width: 24px;
+    height: 24px;
+    transition: filter 0.3s ease-in-out;
+}
+
+.ai-mic-button:hover {
+    background-color: #18bc9c;
+    border-color: #18bc9c;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(24, 188, 156, 0.5);
+}
+
+/* Generate Button */
+.ai-generate-button {
+    background: #2c3e50; /* Match navbar background */
+    border: 3px solid #18bc9c; /* Match highlight color from navbar */
+    border-radius: 29px;
+    margin-top: -52px;
+    margin-left: 970px;
+    cursor: pointer;
+    padding: 10px 20px;
+    color: #18bc9c; /* Match highlight color from navbar */
+    font-size: 1em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    height: 50px; /* Same height as the prompt container */
+    align-self: center; /* Aligns the button vertically with the prompt container */
+}
+
+.ai-generate-button:hover {
+    background-color: #18bc9c; /* Highlight color on hover */
+    color: #2c3e50; /* Navbar background color on hover */
+    border-color: #2c3e50; /* Match background color on hover */
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 20px #18bc9c; /* Glow effect */
+}

@@ -8,6 +8,8 @@ import LandingPage from './LandingPage';
 import Task from './Task';
 import Calendar from './Calendar';
 import Notes from './Notes';
+import Timer from './Timer';
+import AIScheduler from './AIScheduler';
 
 function App() {
   return (
@@ -45,6 +47,22 @@ function App() {
           element={
             <AuthGuard>
               <Notes />
+            </AuthGuard>
+          }
+        />
+        <Route
+          path="/Timer"
+          element={
+            <AuthGuard>
+              <Timer />
+            </AuthGuard>
+          }
+        />
+        <Route
+          path="/AIScheduler"
+          element={
+            <AuthGuard>
+              <AIScheduler />
             </AuthGuard>
           }
         />

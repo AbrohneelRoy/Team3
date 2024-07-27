@@ -1,0 +1,205 @@
+/* Timer Container */
+.time-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+/* Header Styling (unchanged) */
+.time-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2c3e50;
+    padding: 15px 30px;
+    color: #18bc9c;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    border-bottom: 3px solid #18bc9c;
+}
+
+.time-logo {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+/* Main Container */
+.time-main {
+    display: flex;
+    flex: 1;
+    background-color: #d5e8e5; 
+}
+
+.time-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    background-color: #2c3e50;
+    padding: 20px 0;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    border-right: 3px solid #18bc9c;
+}
+
+.time-nav-button {
+    background-color: #2c3e50;
+    color: #18bc9c;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    margin: 10px;
+    padding: 15px 20px;
+    text-align: left;
+    width: calc(100% - 40px);
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    border-color: #18bc9c;
+}
+
+.time-nav-button:hover {
+    background-color: #18bc9c;
+    color: #2c3e50;
+    border: 2px solid #2c3e50;
+    transform: translateX(10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.time-nav-icon {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    transition: filter 0.3s ease-in-out;
+}
+
+.time-nav-button:hover .time-nav-icon {
+    fill: #2c3e50
+}
+
+.time-nav-button.active {
+    background-color: #18bc9c;
+    color: #2c3e50;
+    border: 2px solid #2c3e50;
+}
+.time-username{
+    font-size: 25px;
+}
+
+
+
+
+
+
+/* Main Content Styling */
+.time-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: -80px; /* Bring content higher */
+    padding: 40px; /* Increased padding for larger container */
+    animation: fadeIn 1s ease-in-out; /* Added fade-in animation */
+}
+
+.timer-display {
+    font-size: 5em; /* Increased font size for prominence */
+    color: #2c3e50;
+    text-align: center;
+    padding: 25px; /* Increased padding for a larger appearance */
+    border: 3px solid #18bc9c; /* Slightly thicker border */
+    border-radius: 20px; /* More rounded corners */
+    background: white;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+    margin-bottom: 40px; /* Increased margin for spacing */
+    letter-spacing: 1px;
+    transition: transform 0.3s ease-in-out; /* Smooth transform */
+}
+
+.timer-display:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.timer-bar-container {
+    width: 100%;
+    max-width: 700px; /* Increased max width */
+    height: 12px;  /* Thinner bar */
+    background-color: #d0d0d0;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.timer-bar {
+    height: 100%;
+    background: linear-gradient(to right, #18bc9c, #16a085);
+    transition: width 1s linear;
+    border-radius: 12px;
+}
+
+.timer-controls {
+    display: flex;
+    gap: 20px; /* Slightly increased gap */
+    animation: fadeInUp 0.8s ease-in-out; /* Added fade-in-up animation */
+}
+
+.timer-button {
+    padding: 15px 30px;  /* Increased padding for larger buttons */
+    background: linear-gradient(135deg, #18bc9c 0%, #16a085 100%);
+    color: white;
+    border: none;
+    border-radius: 10px; /* Slightly more rounded corners */
+    cursor: pointer;
+    font-size: 1.2em;  /* Slightly increased font size */
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.timer-button:hover {
+    background: linear-gradient(135deg, #16a085 0%, #149276 100%);
+    transform: scale(1.1); /* Larger scale on hover */
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+.timer-button:disabled {
+    background: #bbb;
+    cursor: not-allowed;
+}
+
+.timer-bar-container, .timer-bar {
+    transition: width 0.3s ease;
+}
+
+.timer-alert {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f44336; /* Red background for alert */
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+  }
+  
+  .timer-alert.fade-out {
+    opacity: 0;
+  }
+  
+
+
+/* Animations */
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
