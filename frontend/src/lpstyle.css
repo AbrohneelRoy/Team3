@@ -1,4 +1,107 @@
-/* Container */
+.lp-about,
+.lp-service,
+.lp-faq {
+  padding: 40px 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+  color: #2c3e50;
+  background-color: #f9f9f9;
+  border: 2px solid #2c3e50;
+}
+.lp-footer{
+    padding: 40px 20px;
+    margin: 20px 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+    color: #2c3e50;
+    background-color: #f9f9f9;
+    border: 2px solid #2c3e50;
+}
+
+.lp-about:hover,
+.lp-service:hover,
+.lp-faq:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 30px rgba(0, 0, 0.2, 0.3), 0 0 15px #2c3e50;
+  border-color: #2c3e50;
+}
+
+.lp-about {
+  background-color: #18bc9c;
+  border-color: #2c3e50;
+}
+
+.lp-about:hover {
+  background-color: #16a085;
+}
+
+.lp-service {
+  background-color: #18bc9c;
+  border-color: #2c3e50;
+}
+
+.lp-service:hover {
+  background-color: #16a085;
+}
+
+.lp-faq {
+  background-color: #18bc9c;
+  border-color: #2c3e50;
+}
+
+.lp-faq:hover {
+  background-color: #16a085;
+
+}
+
+.lp-footer {
+  background-color: #2c3e50;
+  color: #fff;
+  border-top: 2px solid #18bc9c;
+  margin-left: -26px;
+  margin-right: -20px;
+}
+
+.lp-footer h2,
+.lp-footer p {
+  color: #fff;
+  margin-left: 29px;
+}
+
+.lp-footer:hover {
+  background-color: #243445;
+  border-color: #18bc9c;
+  box-shadow : 0 20px 30px rgba(0, 0, 0.2, 0.3), 0 0 15px #18bc9c;
+}
+
+.lp-navigation .lp2-link {
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+.lp-navigation .lp2-link:hover {
+  text-decoration: underline;
+  color: #18bc9c;
+  transition: color 0.3s ease;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .lp-container {
     max-width: 1500px;
     margin: 0 auto;
@@ -8,14 +111,12 @@
     height: 100vh;
     background: linear-gradient(to right, #2c3e50, #4ca1af);
     color: #fff;
-    overflow: hidden;
 }
 
-/* Header */
 .lp-header {
     background-color: rgba(44, 62, 80, 0.9);
     color: #fff;
-    padding: 17px;
+    padding: 14px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
@@ -50,18 +151,30 @@
 .lp-link:hover {
     color: #18bc9c;
 }
-.lp2-link {
+
+.nav-link {
     color: #fff;
+    background: transparent;
+    border: 2px solid transparent;
     text-decoration: none;
-    transition: color 0.3s;
-    font-size: 1.1em;
+    transition: color 0.3s ease, transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
     margin-left: -30px;
     margin-right: 35px;
+    position: relative;
+    display: inline-block;
+    border-radius: 5px;
+    font-size: 19px;
+    margin-left: -35px;
 }
 
-.lp2-link:hover {
+
+
+.nav-link:hover {
     color: #18bc9c;
+    transform: scale(1.05);
 }
+
+  
 
 .lp-get-started-btn {
     background-color: #18bc9c;
@@ -96,7 +209,6 @@
     box-shadow: 0 0 15px #18bc9c;
 }
 
-/* Main Content */
 .lp-main-content {
     display: flex;
     align-items: center;
@@ -149,7 +261,6 @@
     transform: scale(1.05);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .lp-main-content {
         flex-direction: column;
@@ -166,7 +277,6 @@
         height: auto;
     }
 }
-/* Login Container */
 .login-container {
     display: flex;
     background-color: rgba(44, 62, 80, 0.85);
@@ -244,7 +354,7 @@
 }
 
 .login-input {
-    padding: 13px; /* Keep the existing padding */
+    padding: 13px; 
     width: 100%;
     border: 2px solid #18bc9c;
     border-radius: 5px;
@@ -252,7 +362,7 @@
     background-color: rgba(255, 255, 255, 0.9);
     color: #2c3e50;
     transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-    box-sizing: border-box; /* Ensures padding does not affect the total width */
+    box-sizing: border-box; 
 }
 
 .login-input:focus {
@@ -351,7 +461,6 @@
     }
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .login-container {
         flex-direction: column;
@@ -363,7 +472,6 @@
     }
 }
 
-/* Register Container */
 
 .register-main-content {
     display: flex;
@@ -428,7 +536,7 @@
 }
 
 .register-input {
-    padding: 13px; /* Keeps the padding similar to login input */
+    padding: 13px; 
     width: 450px;
     border: 2px solid #18bc9c;
     border-radius: 5px;
@@ -436,7 +544,7 @@
     background-color: rgba(255, 255, 255, 0.9);
     color: #2c3e50;
     transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-    box-sizing: border-box; /* Ensures padding does not affect the total width */
+    box-sizing: border-box;
 }
 
 .register-input:focus {
@@ -464,7 +572,6 @@
     box-shadow: 0 0 15px #18bc9c;
 }
 
-/* Animations */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -476,7 +583,6 @@
     }
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .lp-main-content {
         flex-direction: column;

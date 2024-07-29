@@ -53,7 +53,7 @@ const Timer = () => {
   };
 
   const playSound = () => {
-    const audio = new Audio('/alert.mp3'); // Ensure this path is correct
+    const audio = new Audio('/alert.mp3');
     audio.play().catch(err => {
       console.error("Failed to play sound:", err);
     });
@@ -68,7 +68,7 @@ const Timer = () => {
       alertBox.classList.add('fade-out');
       setTimeout(() => {
         alertBox.remove();
-      }, 500); // Match the CSS transition duration
+      }, 500); 
     }, 5000);
   };
 
@@ -83,8 +83,7 @@ const Timer = () => {
             setIsBreak(prev => !prev);
             playSound();
             showAlert(isBreak ? 'Break time over! Back to work!' : 'Work time over! Take a break!');
-            // Switch time between work and break intervals
-            return isBreak ? 25 * 60 : 5 * 60; // Default work time 25 minutes, break time 5 minutes
+            return isBreak ? 25 * 60 : 5 * 60; 
           }
           return prevTime - 1;
         });
@@ -105,7 +104,7 @@ const Timer = () => {
   const resetTimer = () => {
     clearInterval(intervalId);
     setIsActive(false);
-    setTime(isBreak ? 5 * 60 : 25 * 60); // Reset to appropriate interval
+    setTime(isBreak ? 5 * 60 : 25 * 60); 
     setIsBreak(false);
     localStorage.removeItem('intervalId');
   };

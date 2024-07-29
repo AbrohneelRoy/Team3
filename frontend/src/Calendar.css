@@ -1,4 +1,3 @@
-/* Calendar Container */
 .calendar-container {
     display: flex;
     flex-direction: column;
@@ -6,7 +5,6 @@
     font-family: 'Arial', sans-serif;
 }
 
-/* Header Styling */
 .calendar-header {
     display: flex;
     justify-content: space-between;
@@ -35,7 +33,6 @@
     font-size: 1.6em;
 }
 
-/* Sidebar Styling */
 .calendar-sidebar {
     display: flex;
     flex-direction: column;
@@ -44,8 +41,8 @@
     padding: 20px 0;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
     border-right: 3px solid #18bc9c;
-    position: fixed; /* Fix sidebar position */
-    top: 62px; /* Align with header height */
+    position: fixed; 
+    top: 62px;
     bottom: 0;
 }
 
@@ -106,38 +103,56 @@
     border: 2px solid #2c3e50;
 }
 
-/* Content Styling */
+
+
+
+
 .calendar-content {
     flex: 1;
-    margin-left: 203px; /* Ensure content area is not overlapped by sidebar */
+    margin-left: 203px; 
     padding: 30px;
     background-color: #e0f2ef;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     margin-top: 1px; /* Align with header height */
+    transition: background-color 0.3s ease;
 }
 
-/* Calendar-specific Styling */
+.calendar-content:hover {
+    background-color: #d5efe9;
+}
+
 .calendar-view-container {
     background: white;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* FullCalendar Custom Styles */
+.calendar-view-container:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
 .fc-toolbar-title {
     font-size: 1.5em;
     color: #2c3e50;
+    transition: color 0.3s ease;
+}
+
+.fc-toolbar-title:hover {
+    color: #18bc9c;
 }
 
 .fc-button-primary {
     background-color: #18bc9c;
     border: none;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .fc-button-primary:hover {
     background-color: #14a084;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .fc-button-primary:active {
@@ -151,10 +166,12 @@
     padding: 2px 5px;
     border-radius: 5px;
     font-size: 0.9em;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .fc-event:hover {
     background-color: #14a084;
+    transform: scale(1.05);
 }
 
 .fc-daygrid-event-dot {
@@ -165,7 +182,6 @@
     background-color: rgba(24, 188, 156, 0.1);
 }
 
-/* Modal Styling */
 .calendar-modal {
     position: fixed;
     top: 0;
@@ -177,6 +193,16 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 .calendar-modal-content {
@@ -187,11 +213,28 @@
     width: 90%;
     max-width: 500px;
     position: relative;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .calendar-modal-content h2 {
     color: #2c3e50;
     margin-bottom: 20px;
+    transition: color 0.3s ease;
+}
+
+.calendar-modal-content h2:hover {
+    color: #18bc9c;
 }
 
 .calendar-modal-content input, .calendar-modal-content textarea {
@@ -201,6 +244,12 @@
     border: 1px solid #ced4da;
     border-radius: 5px;
     font-size: 1em;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.calendar-modal-content input:focus, .calendar-modal-content textarea:focus {
+    border-color: #18bc9c;
+    box-shadow: 0 0 5px rgba(24, 188, 156, 0.5);
 }
 
 .calendar-modal-content input[type="datetime-local"] {
@@ -219,15 +268,15 @@
     padding: 10px 15px;
     font-size: 1em;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s;
     margin-right: 10px;
 }
 
 .calendar-modal-buttons button:hover {
     background-color: #16a085;
+    transform: scale(1.05);
 }
 
-/* Additional Button Styling */
 .calendar-modal-buttons .calendar-delete-button {
     background-color: #e74c3c;
 }

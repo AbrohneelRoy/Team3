@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import './lpstyle.css'; // Assuming you will create this CSS file
-import reimg from './reg.png'; // Assuming the image is in the same directory
+import './lpstyle.css'; 
+import reimg from './reg.png'; 
 
 
 const Register = () => {
@@ -43,7 +43,7 @@ const Register = () => {
   return (
     <div className="lp-container">
       <header className="lp-header">
-        <div className="lp-logo">Chrono Craft</div>
+        <div className="lp-logo">ChronoCraft</div>
         <nav className="lp-navigation">
           <Link to="/" className="lp-link">Home</Link>
           <Link to="/about" className="lp-link">About</Link>

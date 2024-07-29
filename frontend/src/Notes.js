@@ -119,7 +119,7 @@ const Notes = () => {
   const handleEditNote = (note) => {
     setNewNote({
       title: note.title,
-      content: note.notes // Ensure we're using the correct key to populate the content
+      content: note.notes 
     });
     setEditingNote(note);
     setShowForm(true);
@@ -128,7 +128,7 @@ const Notes = () => {
   const handleDeleteNote = async (id) => {
     try {
       await axios.delete(`http://localhost:8080/api/notes/${id}`);
-      fetchNotes(userId); // Refresh notes list
+      fetchNotes(userId); 
     } catch (error) {
       console.error('Error deleting note:', error);
     }
@@ -137,7 +137,7 @@ const Notes = () => {
   useEffect(() => {
     fetchUserInfo().then(() => {
       if (userId) {
-        fetchNotes(userId); // Fetch notes after userId is set
+        fetchNotes(userId); 
       }
     });
   }, [loggedInUser, userId]);

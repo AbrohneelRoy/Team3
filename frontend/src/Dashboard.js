@@ -55,10 +55,8 @@ const Dashboard = () => {
       const response = await axios.get(`http://localhost:8080/api/events/${userId}`);
       const events = response.data;
 
-      // Get today's date in YYYY-MM-DD format
       const today = new Date().toISOString().split('T')[0];
 
-      // Filter events to only include those that are scheduled for today
       const filteredEvents = events.filter(event => event.start.split('T')[0] === today);
 
       setTodaysEvents(filteredEvents);
@@ -72,7 +70,6 @@ const Dashboard = () => {
       const response = await axios.get('http://localhost:8080/api/tasks/important');
       const tasks = response.data;
 
-      // Filter tasks to only include those that belong to the current user
       const userTasks = tasks.filter(task => task.userId === userId);
 
       setImportantTasks(userTasks);

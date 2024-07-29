@@ -76,7 +76,7 @@ const Task = () => {
       setNewTask('');
       setIsImportant(false);
       setIsAddingTask(false);
-      setIsPlusSign(true); // Reset button to plus sign
+      setIsPlusSign(true); 
     } catch (error) {
       console.error('Error adding task:', error);
     }
@@ -155,10 +155,8 @@ const Task = () => {
   };
 
   const toggleSign = () => {
-    // Toggle the sign before updating the add task state
     setIsPlusSign(prev => !prev);
   
-    // Toggle the add task container visibility
     setIsAddingTask(prev => !prev);
   };
   

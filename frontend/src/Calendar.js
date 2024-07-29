@@ -8,7 +8,6 @@ import axios from 'axios';
 import emailjs from 'emailjs-com';
 import './Calendar.css';
 
-// Import navigation icons
 import nav1 from './home.png'; 
 import nav11 from './homehover.png'; 
 import nav2 from './calendar.png'; 
@@ -32,12 +31,11 @@ const Calendar = () => {
   const [currentEventId, setCurrentEventId] = useState(null);
   const [newEvent, setNewEvent] = useState({ title: '', start: '', end: '', description: '' });
   const [userId, setUserId] = useState(null);
-  const [email, setEmail] = useState(null); // Fixed typo here
+  const [email, setEmail] = useState(null); 
   const navigate = useNavigate();
   const location = useLocation();
   const loggedInUser = localStorage.getItem('username');
 
-  // Fetch user info to get userId and email
   const fetchUserInfo = async () => {
     try {
       const response = await axios.get('http://localhost:8080/login');
@@ -45,7 +43,7 @@ const Calendar = () => {
 
       if (currentUser) {
         setUserId(currentUser.id);
-        setEmail(currentUser.email); // Fixed typo here
+        setEmail(currentUser.email); 
       } else {
         console.error('User not found in API response');
       }
@@ -58,7 +56,6 @@ const Calendar = () => {
     fetchUserInfo();
   }, [loggedInUser]);
 
-  // Fetch events for the user
   useEffect(() => {
     if (userId !== null) {
       axios.get(`http://localhost:8080/api/events/${userId}`)
@@ -74,13 +71,13 @@ useEffect(() => {
     const upcomingEvents = events.filter(event => {
       const startTime = new Date(event.start);
       const timeDifference = startTime - now;
-      return timeDifference > 0 && timeDifference <= 600000; // 10 minutes in milliseconds
+      return timeDifference > 0 && timeDifference <= 600000; 
     });
 
     upcomingEvents.forEach(event => {
       sendEmailAlert(event);
     });
-  }, 60000); // Check every 1 minute
+  }, 60000); 
 
   return () => clearInterval(interval);
 }, [events]);
@@ -143,21 +140,21 @@ const sendEmailAlert = (event) => {
 
     setNewEvent({
       title: event.title || '',
-      start: event.startStr || '', // Using startStr for correct format
-      end: event.endStr || '', // Using endStr for correct format
-      description: event.extendedProps.description || '' // Extended properties if any
+      start: event.startStr || '',
+      end: event.endStr || '', 
+      description: event.extendedProps.description || '' 
     });
     setIsEdit(true);
-    setCurrentEventId(event.id); // Use the event ID provided directly by clickInfo
+    setCurrentEventId(event.id); 
     setIsModalOpen(true);
   };
 
   const handleSelect = (selectInfo) => {
     const selectedStartDate = new Date(selectInfo.startStr);
     const selectedEndDate = new Date(selectedStartDate);
-    selectedEndDate.setHours(selectedEndDate.getHours() + 1); // Set end time to one hour later
+    selectedEndDate.setHours(selectedEndDate.getHours() + 1); 
 
-    const formatDate = (date) => date.toISOString().slice(0, 16); // Format date to YYYY-MM-DDTHH:MM
+    const formatDate = (date) => date.toISOString().slice(0, 16); 
 
     setNewEvent({
       title: '',

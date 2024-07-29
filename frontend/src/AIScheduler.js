@@ -13,6 +13,8 @@ import nav5 from './timer.png';
 import nav55 from './timerhover.png';
 import nav6 from './logout.png';
 import nav66 from './logouthover.png';
+import nav7 from './gpt.png';
+import nav77 from './gpthover.png';
 import micIcon from './mic.png';
 import micHover from './michover.png';
 
@@ -97,7 +99,7 @@ const AIScheduler = () => {
             onMouseEnter={() => setHovered('gpt')}
             onMouseLeave={() => setHovered(null)}
           >
-            <img src={hovered === 'gpt' || isActiveRoute('/AIScheduler') ? nav55 : nav5} alt="AIScheduler" className="time-nav-icon" /> AIScheduler
+            <img src={hovered === 'gpt' || isActiveRoute('/AIScheduler') ? nav77 : nav7} alt="AIScheduler" className="time-nav-icon" /> AIScheduler
           </button>
           <button
             className={`ai-nav-button ${isActiveRoute('/logout') ? 'active' : ''}`}
