@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './AIScheduler.css';
@@ -18,44 +18,162 @@ import nav7 from './gpt.png';
 import nav77 from './gpthover.png';
 import micIcon from './mic.png';
 import micHover from './michover.png';
+const currentDate = new Date();
+const currentDateString = currentDate.toISOString().split('T')[0];
+
+const predefinedInstruction = `
+  Please provide the following event details in JSON format: title, start time, end time, and description.
+  Today’s date is ${currentDateString}.
+  I want appropriate Title good Grammer try to limit words but don't change or make difficult meaning.
+  if time not mentioned then set the time as per the universal standards.
+  just give me only in JSON format alone such that i can post in backend, if extra words you give then error, so strictly follow json what ever condition maybe please.
+  Example format: [
+    {
+      "title": "Event Title",
+      "start": "2024-07-26T00:00",
+      "end": "2024-07-26T01:00",
+      "description": "Event Description"
+    }
+  ]
+`;
 
 const AIScheduler = () => {
   const [hovered, setHovered] = useState(null);
   const [prompt, setPrompt] = useState('');
-  const [response, setResponse] = useState('');
+  const [response, setResponseText] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
   const loggedInUser = localStorage.getItem('username');
+  const [userId, setUserId] = useState(null);
+
+
+  const fetchUserInfo = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/login');
+      const currentUser = response.data.find(user => user.username === loggedInUser);
+
+      if (currentUser) {
+        setUserId(currentUser.id);
+      } else {
+        console.error('User not found in API response');
+      }
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, [loggedInUser]);
+
+
 
   const handleLogout = () => {
     localStorage.clear();
     navigate('/Login', { replace: true });
   };
 
-  const handleGenerate = async () => {
-    console.log('Generate button clicked with prompt:', prompt);
-    const apiKey = 'sk-proj-9iBz6CcvNYvJmVRKDUPYT3BlbkFJeuLhQoNcNGtvAg08ZVmU';
-    const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
+  const parseResponseToEvents = (responseText) => {
     try {
-      const res = await axios.post(apiUrl, {
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: prompt }],
-        max_tokens: 150,
-      }, {
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      console.log('API response:', res.data);
-      setResponse(res.data.choices[0].message.content); // Set the response state with the API response
+      // Log the raw response text for debugging
+      console.log('Raw response text:', responseText);
+  
+      // Clean the response text to remove unwanted characters
+      const cleanedText = responseText
+        .replace(/```json/g, '') // Remove starting ```json
+        .replace(/```/g, '')    // Remove remaining ```
+        .trim();                // Remove extra spaces
+  
+      // Log cleaned response text for debugging
+      console.log('Cleaned response text:', cleanedText);
+  
+      // Attempt to parse the cleaned response text as JSON
+      let events = JSON.parse(cleanedText);
+  
+      // Validate and transform the parsed data into the required format
+      if (Array.isArray(events)) {
+        return events.map(event => ({
+          userId: userId,
+          title: event.title ? event.title.trim() : 'Untitled',
+          start: event.start ? event.start.trim() : new Date().toISOString(),
+          end: event.end ? event.end.trim() : new Date(new Date().getTime() + 3600000).toISOString(), // Default to 1 hour later
+          description: event.description ? event.description.trim() : 'No description'
+        }));
+      } else {
+        throw new Error('Parsed data is not an array.');
+      }
     } catch (error) {
-      console.error('Error generating response:', error);
-      setResponse('An error occurred while generating the response. Please try again.');
+      console.error('Error parsing response:', error);
+      alert('Failed to parse AI response. Please ensure the format is correct.');
+      return [];
     }
   };
+  
+
+  const handleGenerate = async () => {
+    try {
+      const fullPrompt = predefinedInstruction + '\n' + prompt;
+
+      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyAnf3s4y1b_IfSs0WEoUZPGw5FRQm5OI5M', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                {
+                  text: fullPrompt
+                }
+              ]
+            }
+          ]
+        }),
+      });
+
+      const data = await response.json();
+      console.log('Full API response:', data);
+
+      if (response.ok) {
+        if (data.candidates && data.candidates.length > 0) {
+          const responseText = data.candidates[0].content.parts.map(part => part.text).join(' ');
+          console.log('Raw response text:', responseText);
+
+          const events = parseResponseToEvents(responseText);
+
+          if (events.length > 0) {
+            // Send events data to your calendar API
+            const calendarResponse = await fetch('http://localhost:8080/api/events/multiple', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(events),
+            });
+
+            if (calendarResponse.ok) {
+              alert('Events added to calendar successfully.');
+            } else {
+              alert('Failed to add events to calendar.');
+            }
+          } else {
+            alert('No valid events to add.');
+          }
+        } else {
+          alert('No valid response received from the AI.');
+        }
+      } else {
+        alert('Error: ' + (data.message || 'Unknown error occurred'));
+      }
+    } catch (error) {
+      console.error('Error during API call:', error);
+      alert('API call failed: Network error or server not responding.');
+    }
+  };
+
+  
 
   const handleMicClick = () => {
     console.log('Microphone button clicked');

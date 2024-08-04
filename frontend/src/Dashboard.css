@@ -311,6 +311,10 @@
   
   .delete-button {
     background-color: #e74c3c;
+    width: 80px;
+
+    margin-right: -80px;
+    margin-left: 20px;
     color: white;
     border: none;
     padding: 8px 15px;
@@ -529,4 +533,48 @@
     }
   }
   
+  
+
+  .extra-user-button {
+    background-color: #18bc9c;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    width: 80px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .extra-user-button:hover {
+    background-color: #128f77;
+    transform: scale(1.05);
+  }
+  
+  .extra-user-button:focus {
+    outline: none;
+  }
+  
+
+
+  .cancel2-button {
+    padding: 10px 15px;
+    margin-left: auto;
+    margin-top: -38px;
+    border: none;
+    border-radius: 8px;
+    background-color: #f44336;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-size: 1em;
+    width: 100px;
+    text-align: center;
+  }
+  
+  .cancel2-button:hover {
+    background-color: #d32f2f;
+    transform: scale(1.05);
+  }
   
