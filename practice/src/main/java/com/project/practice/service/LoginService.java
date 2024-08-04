@@ -45,4 +45,14 @@ public class LoginService {
     public boolean emailExists(String email) {
         return loginRepository.findByEmail(email) != null;
     }
+    public Optional<Login> updateLogin(Long id, Login login) {
+        return loginRepository.findById(id).map(existingLogin -> {
+            existingLogin.setUsername(login.getUsername());
+            existingLogin.setEmail(login.getEmail());
+            existingLogin.setPassword(login.getPassword());
+            existingLogin.setRole(login.getRole());
+            return loginRepository.save(existingLogin);
+        });
+    }
+    
 }

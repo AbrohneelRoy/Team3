@@ -11,6 +11,7 @@ import com.project.practice.service.LoginService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/login")
@@ -70,6 +71,15 @@ public class LoginController {
             }
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("success", false, "message", "Invalid username or password"));
+        }
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateLogin(@PathVariable Long id, @RequestBody Login login) {
+        Optional<Login> updatedLogin = loginService.updateLogin(id, login);
+        if (updatedLogin.isPresent()) {
+            return ResponseEntity.ok(Map.of("success", true, "message", "Login updated successfully", "login", updatedLogin.get()));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("success", false, "message", "Login not found"));
         }
     }
 }
