@@ -30,6 +30,11 @@ const Dashboard = () => {
   const [importantTasks, setImportantTasks] = useState([]);
   const [email, setEmail] = useState(null);
   const [uniqueContent, setUniqueContent] = useState("This could be a motivational quote or recent achievements");
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [newUsername, setNewUsername] = useState('');
+  const [newEmail, setNewEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [newRole, setNewRole] = useState('user');
 
   const loggedInUser = localStorage.getItem('username');
 
@@ -141,6 +146,47 @@ const Dashboard = () => {
         setError('Failed to delete user');
       });
   };
+
+
+  const handleAddUserClick = () => {
+    setIsPopupVisible(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupVisible(false);
+    setNewUsername('');
+    setNewEmail('');
+    setNewPassword('');
+    setNewRole('user');
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch('http://localhost:8080/login', { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: newUsername, email: newEmail, password: newPassword, role: newRole }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(data.message);
+        handleClosePopup();
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
+      alert('Registration failed: Network error or server not responding.');
+    }
+  };
+
+
 
   return (
     <>
@@ -287,6 +333,39 @@ const Dashboard = () => {
             </table>
           ) : (
             <p>Loading user data...</p>
+          )}
+          <button className="add-user-button" onClick={handleAddUserClick}>+</button>
+          {isPopupVisible && (
+            <div className="popup-container">
+              <div className="popup-content">
+                <h2>Add New User</h2>
+                <form onSubmit={handleSubmit}>
+                  <label>
+                    Username:
+                    <input type="text" value={newUsername} onChange={(e) => setNewUsername(e.target.value)} required />
+                  </label>
+                  <label>
+                    Email:
+                    <input type="email" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} required />
+                  </label>
+                  <label>
+                    Password:
+                    <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required />
+                  </label>
+                  <label>
+                    Role:
+                    <label>
+                      <input type="radio" value="user" checked={newRole === 'user'} onChange={() => setNewRole('user')} /> User
+                    </label>
+                    <label>
+                      <input type="radio" value="admin" checked={newRole === 'admin'} onChange={() => setNewRole('admin')} /> Admin
+                    </label>
+                  </label>
+                  <button type="submit" className="extra-user-button">Add User</button>
+                  <button type="button" className="cancel-button" onClick={handleClosePopup}>Cancel</button>
+                </form>
+              </div>
+            </div>
           )}
         </div>
       </div>

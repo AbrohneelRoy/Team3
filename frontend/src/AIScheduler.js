@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './AIScheduler.css';
 import nav1 from './home.png';
@@ -21,6 +22,7 @@ import micHover from './michover.png';
 const AIScheduler = () => {
   const [hovered, setHovered] = useState(null);
   const [prompt, setPrompt] = useState('');
+  const [response, setResponse] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
   const loggedInUser = localStorage.getItem('username');
@@ -30,8 +32,29 @@ const AIScheduler = () => {
     navigate('/Login', { replace: true });
   };
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     console.log('Generate button clicked with prompt:', prompt);
+    const apiKey = 'sk-proj-9iBz6CcvNYvJmVRKDUPYT3BlbkFJeuLhQoNcNGtvAg08ZVmU';
+    const apiUrl = 'https://api.openai.com/v1/chat/completions';
+
+    try {
+      const res = await axios.post(apiUrl, {
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: prompt }],
+        max_tokens: 150,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      console.log('API response:', res.data);
+      setResponse(res.data.choices[0].message.content); // Set the response state with the API response
+    } catch (error) {
+      console.error('Error generating response:', error);
+      setResponse('An error occurred while generating the response. Please try again.');
+    }
   };
 
   const handleMicClick = () => {
@@ -126,10 +149,16 @@ const AIScheduler = () => {
               onMouseEnter={() => setHovered('mic')}
               onMouseLeave={() => setHovered(null)}
             >
-              <img src={hovered === 'mic' ?  micHover : micIcon} alt="Mic" />
+              <img src={hovered === 'mic' ? micHover : micIcon} alt="Mic" />
             </button>
           </div>
-            <button className="ai-generate-button" onClick={handleGenerate}>Generate</button>
+          <button className="ai-generate-button" onClick={handleGenerate}>Generate</button>
+          {response && (
+            <div className="ai-response">
+              <h2>AI Response</h2>
+              <p>{response}</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

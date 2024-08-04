@@ -52,10 +52,7 @@ const Login = () => {
         <div className="lp-logo">ChronoCraft</div>
         <nav className="lp-navigation">
           <Link to="/" className="lp-link">Home</Link>
-          <Link to="/" className="lp-link">About</Link>
-          <Link to="/" className="lp-link">Service</Link>
-          <Link to="/" className="lp-link">Contact Us</Link>
-          <Link to="/" className="lp-link">FAQ</Link>
+
         </nav>
         <button onClick={handleSignUp} className="lp-get-started-btn">SIGN UP</button>
       </header>

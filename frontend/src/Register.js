@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './lpstyle.css'; 
 import reimg from './reg.png'; 
+import emailjs from 'emailjs-com';
+
 
 
 const Register = () => {
@@ -26,6 +28,7 @@ const Register = () => {
 
       if (response.ok) {
         alert(data.message);
+        sendConfirmationEmail(email, username); 
         navigate('/Login');
       } else {
         alert(data.message);
@@ -34,6 +37,21 @@ const Register = () => {
       console.error('Error during registration:', error);
       alert('Registration failed: Network error or server not responding.');
     }
+  };
+  const sendConfirmationEmail = (email, username) => {
+    const templateParams = {
+      to_email: email,
+      to_name: username,
+      message: 'Thank you for registering with Chronocraft! Your account has been created successfully.',
+    };
+
+    emailjs.send('service_grrc09p', 'template_2j8l23n', templateParams, '9qPVcliB0l4Hvmnc3')
+      .then((response) => {
+        console.log('Confirmation email sent successfully!', response.status, response.text);
+      })
+      .catch((error) => {
+        console.error('Failed to send confirmation email:', error);
+      });
   };
 
   const handleSignIn = () => {

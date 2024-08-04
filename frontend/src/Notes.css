@@ -6,6 +6,9 @@
 }
 
 .no-header {
+    position: fixed;
+    z-index: 100;
+    width: 213vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -70,6 +73,10 @@
     padding: 20px 0;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
     border-right: 3px solid #18bc9c;
+    position: fixed; /* Make the sidebar fixed */
+    height: 100vh; /* Full height of the viewport */
+    z-index: 1; /* Ensure it is above other content */
+    margin-top: 60px;
 }
 
 .no-nav-button {
@@ -130,6 +137,8 @@
 }
 
 .no-content {
+    margin-left: 200px;
+    margin-top: 60px;
     flex: 1;
     padding: 30px;
     background-color: #e0f2ef;

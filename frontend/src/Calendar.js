@@ -97,7 +97,7 @@ const sendEmailAlert = (event) => {
 
   console.log("Sending email with parameters:", templateParams);
 
-  emailjs.send('service_x09rm1q', 'template_8v5t7ww', templateParams, 'I2_GAwSRfXrh5MpA0')
+  emailjs.send('service_grrc09p', 'template_fz3jxvw', templateParams, '9qPVcliB0l4Hvmnc3')
     .then((response) => {
       console.log('Email sent successfully!', response.status, response.text);
     })
