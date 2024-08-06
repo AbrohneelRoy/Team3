@@ -265,6 +265,21 @@
 }
 
 
+.quote {
+  text-align: center;
+  font-size: 18px;
+  color: #555;
+}
+
+.quote-text {
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+.quote-author {
+  font-weight: bold;
+  color: #333;
+}
 
 
 

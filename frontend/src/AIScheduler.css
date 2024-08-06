@@ -6,6 +6,9 @@
 }
 
 .ai-header {
+    position: fixed;
+    z-index: 100;
+    width: 213vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -35,6 +38,10 @@
     padding: 20px 0;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
     border-right: 3px solid #18bc9c;
+    position: fixed; /* Make the sidebar fixed */
+    height: 100vh; /* Full height of the viewport */
+    z-index: 1; /* Ensure it is above other content */
+    margin-top: 60px;
 }
 
 .ai-nav-button {
@@ -88,15 +95,25 @@
 
 
 .ai-content {
+    margin-left: 200px;
+    margin-top: 60px;
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin-bottom: 70px;
     align-items: center;
     justify-content: center;
-    margin-top: -80px; 
-    padding: 40px; 
-    animation: fadeIn 1s ease-in-out;
+    animation: moveUp 1s ease-in-out; /* Updated animation */
+}
+
+@keyframes moveUp {
+    0% {
+        transform: translateY(50px); /* Start from below */
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0); /* Move up */
+        opacity: 1;
+    }
 }
 
 @keyframes fadeIn {
@@ -105,7 +122,7 @@
 }
 
 .ai-prompt-container {
-    margin-top: 20px;
+    margin-top: 10px;
     display: flex;
     align-items: center;
     width: calc(100% - 120px);
@@ -117,6 +134,19 @@
     background-color: #2c3e50;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: border-color 0.4s ease-in-out, box-shadow 0.4s ease-in-out, transform 0.4s ease-in-out;
+    animation: promptSlideUp 0.8s ease-in-out; /* Add slide-up animation */
+
+}
+
+@keyframes promptSlideUp {
+    0% {
+        transform: translateY(50px); /* Start from below */
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0); /* Move up */
+        opacity: 1;
+    }
 }
 
 .ai-prompt-container:hover {
@@ -190,3 +220,100 @@
     transform: scale(1.05);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 20px #18bc9c;
 }
+
+
+
+.ai-events-table {
+    width: 85%;
+    border-collapse: collapse;
+    margin-top: 70px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    animation: fadeInTable 1s ease-in-out; /* Add fade-in animation for the table */
+
+  }
+  
+  .ai-events-table th,
+  .ai-events-table td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: left;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .ai-events-table th {
+    background-color: #18bc9c; /* Change this to the desired color */
+    color: #ffffff; /* Text color for better contrast */
+    font-weight: bold;
+    text-transform: uppercase; /* Optional: Capitalize the column names */
+    letter-spacing: 0.05em; /* Optional: Slightly increase letter spacing */
+  }
+  
+  .ai-events-table tr {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .ai-events-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .ai-events-table tr:hover {
+    background-color: #eaf3f3;
+    transform: translateY(-2px);
+  }
+  
+
+  .ai-confirm-button {
+    margin-top: 1%;
+    background-color: #18bc9c; /* Primary button color */
+    color: #ffffff; /* Text color */
+    padding: 12px 24px; /* Padding for a substantial feel */
+    border: none; /* Remove default border */
+    border-radius: 8px; /* Smooth corners */
+    font-size: 16px; /* Readable font size */
+    font-weight: bold; /* Bold text for emphasis */
+    text-transform: uppercase; /* Optional: Capitalize button text */
+    cursor: pointer; /* Change cursor on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Subtle shadow for depth */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; /* Smooth transitions */
+  }
+  
+  .ai-confirm-button:hover {
+    transform: translateY(-3px); /* Subtle lift effect */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+    background-color: #128f77; /* Slightly darker shade on hover */
+
+  }
+  @keyframes fadeInTable {
+    0% {
+        opacity: 0;
+        transform: translateY(50px); /* Start from below */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* Move up */
+    }
+}
+ 
+.ai-cancel-button{
+    margin-top: 7%;
+    background-color: #f44336; /* Primary button color */
+    margin-left: 10px;
+    color: #ffffff; /* Text color */
+    padding: 12px 24px; /* Padding for a substantial feel */
+    border: none; /* Remove default border */
+    border-radius: 8px; /* Smooth corners */
+    font-size: 16px; /* Readable font size */
+    font-weight: bold; /* Bold text for emphasis */
+    text-transform: uppercase; /* Optional: Capitalize button text */
+    cursor: pointer; /* Change cursor on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Subtle shadow for depth */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; /* Smooth transitions */
+}
+
+.ai-cancel-button:hover {
+    transform: translateY(-3px); /* Subtle lift effect */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+    background-color: #d32f2f; /* Slightly darker shade on hover */
+  }

@@ -18,6 +18,8 @@ import nav7 from './gpt.png';
 import nav77 from './gpthover.png';
 import micIcon from './mic.png';
 import micHover from './michover.png';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+
 const currentDate = new Date();
 const currentDateString = currentDate.toISOString().split('T')[0];
 
@@ -26,6 +28,7 @@ const predefinedInstruction = `
   Today’s date is ${currentDateString}.
   I want appropriate Title good Grammer try to limit words but don't change or make difficult meaning.
   if time not mentioned then set the time as per the universal standards.
+  In description for 5 words put something as per the title.
   just give me only in JSON format alone such that i can post in backend, if extra words you give then error, so strictly follow json what ever condition maybe please.
   Example format: [
     {
@@ -41,11 +44,25 @@ const AIScheduler = () => {
   const [hovered, setHovered] = useState(null);
   const [prompt, setPrompt] = useState('');
   const [response, setResponseText] = useState('');
+  const [showConfirmButton, setShowConfirmButton] = useState(false); // New state for showing the Confirm button
+  const [showTable, setShowTable] = useState(false); // New state for showing/hiding the table
+
+
   const navigate = useNavigate();
   const location = useLocation();
   const loggedInUser = localStorage.getItem('username');
   const [userId, setUserId] = useState(null);
 
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition();
+
+  useEffect(() => {
+    setPrompt(transcript);
+  }, [transcript]);
 
   const fetchUserInfo = async () => {
     try {
@@ -142,22 +159,11 @@ const AIScheduler = () => {
           console.log('Raw response text:', responseText);
 
           const events = parseResponseToEvents(responseText);
+          setResponseText(events);
 
           if (events.length > 0) {
-            // Send events data to your calendar API
-            const calendarResponse = await fetch('http://localhost:8080/api/events/multiple', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(events),
-            });
-
-            if (calendarResponse.ok) {
-              alert('Events added to calendar successfully.');
-            } else {
-              alert('Failed to add events to calendar.');
-            }
+            setShowTable(true); // Show the table after generating events
+            setShowConfirmButton(true); // Show the Confirm button after generating events
           } else {
             alert('No valid events to add.');
           }
@@ -173,11 +179,74 @@ const AIScheduler = () => {
     }
   };
 
+  const handleConfirm = async () => {
+    try {
+      const calendarResponse = await fetch('http://localhost:8080/api/events/multiple', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(response),
+      });
+
+      if (calendarResponse.ok) {
+        alert('Events added to calendar successfully.');
+        setShowConfirmButton(false); // Hide the Confirm button after successful storage
+        setShowTable(false); // Hide the table after successful storage
+        setResponseText([]); // Clear the table after successful storage
+      } else {
+        alert('Failed to add events to calendar.');
+      }
+    } catch (error) {
+      console.error('Error during API call:', error);
+      alert('API call failed: Network error or server not responding.');
+    }
+  };
+
+  const handleCancel = () => {
+    setShowTable(false); // Hide the table
+    setShowConfirmButton(false); // Hide the Confirm button
+    setResponseText([]);
+  };
+
+  const displayEventsAsTable = (events) => {
+    return (
+      <table className="ai-events-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {events.map((event, index) => (
+            <tr key={index}>
+              <td>{event.title}</td>
+              <td>{event.start}</td>
+              <td>{event.end}</td>
+              <td>{event.description}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  };
+
   
 
   const handleMicClick = () => {
-    console.log('Microphone button clicked');
+    if (listening) {
+      SpeechRecognition.stopListening();
+    } else {
+      SpeechRecognition.startListening({ continuous: true });
+    }
   };
+
+  if (!browserSupportsSpeechRecognition) {
+    return <span>Browser doesn't support speech recognition.</span>;
+  }
 
   const routeToDashboard = () => navigate('/Dashboard');
   const routeToCalendar = () => navigate('/Calendar');
@@ -267,14 +336,16 @@ const AIScheduler = () => {
               onMouseEnter={() => setHovered('mic')}
               onMouseLeave={() => setHovered(null)}
             >
-              <img src={hovered === 'mic' ? micHover : micIcon} alt="Mic" />
+              <img src={hovered === 'mic' || listening ? micHover : micIcon} alt="Mic" className="ai-mic-icon" />
             </button>
           </div>
           <button className="ai-generate-button" onClick={handleGenerate}>Generate</button>
-          {response && (
-            <div className="ai-response">
-              <h2>AI Response</h2>
-              <p>{response}</p>
+          {response.length > 0 && displayEventsAsTable(response)}
+
+          {showConfirmButton && (
+            <div>
+            <button className="ai-confirm-button" onClick={handleConfirm}>Confirm</button>
+            <button className="ai-cancel-button" onClick={handleCancel}>Cancel</button>
             </div>
           )}
         </div>

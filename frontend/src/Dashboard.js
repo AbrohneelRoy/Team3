@@ -29,7 +29,9 @@ const Dashboard = () => {
   const [todaysEvents, setTodaysEvents] = useState([]);
   const [importantTasks, setImportantTasks] = useState([]);
   const [email, setEmail] = useState(null);
-  const [uniqueContent, setUniqueContent] = useState("This could be a motivational quote or recent achievements");
+  const [quote, setQuote] = useState("");
+  const [author, setAuthor] = useState("");
+  const [loading, setLoading] = useState(true);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [newUsername, setNewUsername] = useState('');
   const [newEmail, setNewEmail] = useState('');
@@ -43,6 +45,24 @@ const Dashboard = () => {
   const [editRole, setEditRole] = useState('user');
 
   const loggedInUser = localStorage.getItem('username');
+
+
+  useEffect(() => {
+    const fetchQuote = async () => {
+      try {
+        const response = await axios.get("https://api.quotable.io/random");
+        setQuote(response.data.content);
+        setAuthor(response.data.author);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching quote:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchQuote();
+  }, []);
+
 
   const fetchUserInfo = async () => {
     try {
@@ -316,8 +336,15 @@ const Dashboard = () => {
                 </ul>
               </div>
               <div className="db-container-box">
-                <h2>Unique Content</h2>
-                <p>{uniqueContent}</p>
+                <h2>Daily Quote</h2>
+                {loading ? (
+                  <p>Loading...</p>
+                ) : (
+                  <div className="quote">
+                    <p className="quote-text">"{quote}"</p>
+                    <p className="quote-author">- {author}</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
