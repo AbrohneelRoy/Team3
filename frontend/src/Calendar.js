@@ -260,7 +260,7 @@ const sendEmailAlert = (event) => {
             onMouseLeave={() => setHovered(null)}
             onClick={routeTime}
           >
-            <img src={hovered === 'time' || isActive('/Timer') ? nav55 : nav5} alt="Timer" className="db-nav-icon" />Pomodoro Timer
+            <img src={hovered === 'time' || isActive('/Timer') ? nav55 : nav5} alt="Timer" className="db-nav-icon" />Pomodoro
           </button>
           <button
             className={`db-nav-button ${isActive('/AIScheduler') ? 'active' : ''}`}

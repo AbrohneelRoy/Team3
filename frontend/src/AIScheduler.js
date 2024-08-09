@@ -46,6 +46,8 @@ const AIScheduler = () => {
   const [response, setResponseText] = useState('');
   const [showConfirmButton, setShowConfirmButton] = useState(false); // New state for showing the Confirm button
   const [showTable, setShowTable] = useState(false); // New state for showing/hiding the table
+  const [editingRowIndex, setEditingRowIndex] = useState(null);
+  const [editedEvent, setEditedEvent] = useState({});
 
 
   const navigate = useNavigate();
@@ -162,8 +164,8 @@ const AIScheduler = () => {
           setResponseText(events);
 
           if (events.length > 0) {
-            setShowTable(true); // Show the table after generating events
-            setShowConfirmButton(true); // Show the Confirm button after generating events
+            setShowTable(true); 
+            setShowConfirmButton(true); 
           } else {
             alert('No valid events to add.');
           }
@@ -210,6 +212,25 @@ const AIScheduler = () => {
   };
 
   const displayEventsAsTable = (events) => {
+
+    const handleRowClick = (index) => {
+      setEditingRowIndex(index);
+      setEditedEvent({ ...events[index] });
+    };
+  
+    const handleInputChange = (e, field) => {
+      setEditedEvent({ ...editedEvent, [field]: e.target.value });
+    };
+  
+    const handleSave = () => {
+      events[editingRowIndex] = editedEvent;
+      setEditingRowIndex(null);
+    };
+  
+    const handleCancel = () => {
+      setEditingRowIndex(null);
+    };
+
     return (
       <table className="ai-events-table">
         <thead>
@@ -218,15 +239,62 @@ const AIScheduler = () => {
             <th>Start Time</th>
             <th>End Time</th>
             <th>Description</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {events.map((event, index) => (
             <tr key={index}>
-              <td>{event.title}</td>
-              <td>{event.start}</td>
-              <td>{event.end}</td>
-              <td>{event.description}</td>
+              {editingRowIndex === index ? (
+                <>
+                  <td>
+                    <input
+                      type="text"
+                      value={editedEvent.title}
+                      className='ai-texttable'
+                      onChange={(e) => handleInputChange(e, 'title')}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      value={editedEvent.start}
+                      className='ai-texttable'
+                      onChange={(e) => handleInputChange(e, 'start')}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      value={editedEvent.end}
+                      className='ai-texttable'
+                      onChange={(e) => handleInputChange(e, 'end')}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      value={editedEvent.description}
+                      className='ai-texttable'
+                      onChange={(e) => handleInputChange(e, 'description')}
+                    />
+                  </td>
+                  <td>
+                    <button onClick={handleSave} className='ai-table-save'>Save</button>
+                    <button onClick={handleCancel} className='ai-table-cancel'>Cancel</button>
+                  </td>
+                </>
+              ) : (
+                <>
+                  <td onClick={() => handleRowClick(index)}>{event.title}</td>
+                  <td onClick={() => handleRowClick(index)}>{event.start}</td>
+                  <td onClick={() => handleRowClick(index)}>{event.end}</td>
+                  <td onClick={() => handleRowClick(index)}>{event.description}</td>
+                  <td>
+                    <button className='ai-table-edit' onClick={() => handleRowClick(index)}>Edit</button>
+                  </td>
+                </>
+              )}
             </tr>
           ))}
         </tbody>
@@ -302,7 +370,7 @@ const AIScheduler = () => {
             onMouseLeave={() => setHovered(null)}
             onClick={routeToTimer}
           >
-            <img src={hovered === 'timer' || isActiveRoute('/Timer') ? nav55 : nav5} alt="Timer" className="ai-nav-icon" /> Pomodoro Timer
+            <img src={hovered === 'timer' || isActiveRoute('/Timer') ? nav55 : nav5} alt="Timer" className="ai-nav-icon" /> Pomodoro
           </button>
           <button
             className={`time-nav-button ${isActiveRoute('/AIScheduler') ? 'active' : ''}`}

@@ -127,7 +127,7 @@
 }
 
 .no-nav-button:hover .no-nav-icon {
-    filter: brightness(0) invert(1);
+    fill: #2c3e50;
 }
 
 .no-nav-button.active {
@@ -279,7 +279,7 @@
 }
 
 .note-item .note-edit-button {
-    background-color: #f39c12;
+    background-color: #18bc9c;
     color: #ffffff;
     border: none;
     padding: 8px 16px;
@@ -290,7 +290,7 @@
 }
 
 .note-item .note-edit-button:hover {
-    background-color: #e67e22;
+    background-color: #1ab193d8;
     transform: scale(1.05);
 }
 

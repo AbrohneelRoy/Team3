@@ -43,6 +43,10 @@ const Dashboard = () => {
   const [editEmail, setEditEmail] = useState('');
   const [editPassword, setEditPassword] = useState('');
   const [editRole, setEditRole] = useState('user');
+  const [showPopup, setShowPopup] = useState(false);
+  const [showPasswordChange, setShowPasswordChange] = useState(false);
+  const [userDetails, setUserDetails] = useState({});
+  const [editedDetails, setEditedDetails] = useState({});
 
   const loggedInUser = localStorage.getItem('username');
 
@@ -249,6 +253,67 @@ const Dashboard = () => {
     }
   };
 
+  // Fetch user details when the component mounts or userId changes
+  useEffect(() => {
+    fetch(`http://localhost:8080/login/${userId}`)
+      .then(response => response.json())
+      .then(data => {
+        setUserDetails(data);
+        setEditedDetails({ username: data.username, email: data.email, password: '' });
+      });
+  }, [userId]);
+
+  const handleEditChange = (e, field) => {
+    setEditedDetails({ ...editedDetails, [field]: e.target.value });
+  };
+
+  const handleSave = () => {
+    // Update user details
+    fetch(`http://localhost:8080/login/${userId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...editedDetails, role: 'user' }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        setUserDetails(data);
+        setShowPopup(false); // Close popup after saving
+        localStorage.setItem('username', editedDetails.username);
+      });
+  };
+
+  const handleCancel = () => {
+    setEditedDetails({ username: userDetails.username, email: userDetails.email, password: '' });
+    setShowPopup(false);
+    setShowPasswordChange(false);
+  };
+
+  const handlePasswordChange = () => {
+    setShowPasswordChange(true);
+  };
+
+  const handlePasswordSave = () => {
+    // Update user details, including the new password
+    fetch(`http://localhost:8080/login/${userId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        username: editedDetails.username, 
+        email: editedDetails.email, 
+        password: editedDetails.password, 
+        role: 'user' 
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        setUserDetails(data); // Update the user details state with the new data
+        setShowPopup(false); // Close the popup
+        setShowPasswordChange(false); // Hide the password change input
+        localStorage.setItem('username', editedDetails.username);
+      });
+  };
+  
+
 
 
   return (
@@ -256,9 +321,70 @@ const Dashboard = () => {
       {role === "user" && (
         <div className="db-container">
           <header className="db-header">
-            <div className="db-logo">Chrono Craft</div>
-            <span style={{ fontSize: '1.6em', color: '#18bc9c' }}>{loggedInUser}</span>
-          </header>
+        <div className="db-logo">Chrono Craft</div>
+        <div className="db-user-section">
+          <span className="db-username">{loggedInUser}</span>
+          <span
+            className="db-user-profile"
+            onClick={() => setShowPopup(true)}
+          >
+            {loggedInUser.charAt(0).toUpperCase()}
+          </span>
+        </div>
+      </header>
+      {showPopup && (
+        <div className="user-popup">
+          <div className="user-popup-content">
+            <h3>User Profile</h3>
+            <label>
+              Username:
+              <input
+                type="text"
+                value={editedDetails.username}
+                onChange={(e) => handleEditChange(e, 'username')}
+                className="user-popup-input"
+              />
+            </label>
+            <label>
+              Email:
+              <input
+                type="email"
+                value={editedDetails.email}
+                onChange={(e) => handleEditChange(e, 'email')}
+                className="user-popup-input"
+              />
+            </label>
+
+            {!showPasswordChange && (
+              <button onClick={handlePasswordChange} className="change-password-btn">
+                Change Password
+              </button>
+            )}
+
+            {showPasswordChange && (
+              <label>
+                New Password:
+                <input
+                  type="password"
+                  value={editedDetails.password}
+                  onChange={(e) => handleEditChange(e, 'password')}
+                  className="user-popup-input"
+                />
+              </label>
+            )}
+
+            <div className="user-popup-actions">
+              {showPasswordChange ? (
+                <button onClick={handlePasswordSave} className="save-btn">Save Password</button>
+              ) : (
+                <button onClick={handleSave} className="save-btn">Save</button>
+              )}
+              <button onClick={handleCancel} className="cancel-btn">Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
           <div className="db-main">
             <nav className="db-sidebar">
               <button
@@ -299,7 +425,7 @@ const Dashboard = () => {
                 onMouseLeave={() => setHovered(null)}
                 onClick={routeTime}
               >
-                <img src={hovered === 'time' || isActive('/Timer') ? nav55 : nav5} alt="Timer" className="db-nav-icon" />Pomodoro Timer
+                <img src={hovered === 'time' || isActive('/Timer') ? nav55 : nav5} alt="Timer" className="db-nav-icon" />Pomodoro
               </button>
               <button
                 className={`db-nav-button ${isActive('/AIScheduler') ? 'active' : ''}`}
@@ -353,9 +479,69 @@ const Dashboard = () => {
       {role === "admin" && (
         <div className="db-container">
         <header className="db-header">
-          <div className="db-logo">Chrono Craft</div>
-          <span style={{ fontSize: '1.6em', color: '#18bc9c' }}>{loggedInUser}</span>
-        </header>
+        <div className="db-logo">Chrono Craft</div>
+        <div className="db-user-section">
+          <span className="db-username">{loggedInUser}</span>
+          <span
+            className="db-user-profile"
+            onClick={() => setShowPopup(true)}
+          >
+            {loggedInUser.charAt(0).toUpperCase()}
+          </span>
+        </div>
+      </header>
+      {showPopup && (
+        <div className="user-popup">
+          <div className="user-popup-content">
+            <h3>User Profile</h3>
+            <label>
+              Username:
+              <input
+                type="text"
+                value={editedDetails.username}
+                onChange={(e) => handleEditChange(e, 'username')}
+                className="user-popup-input"
+              />
+            </label>
+            <label>
+              Email:
+              <input
+                type="email"
+                value={editedDetails.email}
+                onChange={(e) => handleEditChange(e, 'email')}
+                className="user-popup-input"
+              />
+            </label>
+
+            {!showPasswordChange && (
+              <button onClick={handlePasswordChange} className="change-password-btn">
+                Change Password
+              </button>
+            )}
+
+            {showPasswordChange && (
+              <label>
+                New Password:
+                <input
+                  type="password"
+                  value={editedDetails.password}
+                  onChange={(e) => handleEditChange(e, 'password')}
+                  className="user-popup-input"
+                />
+              </label>
+            )}
+
+            <div className="user-popup-actions">
+              {showPasswordChange ? (
+                <button onClick={handlePasswordSave} className="save-btn">Save Password</button>
+              ) : (
+                <button onClick={handleSave} className="save-btn">Save</button>
+              )}
+              <button onClick={handleCancel} className="cancel-btn">Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
         <div className="db-main">
           <nav className="db-sidebar">
             <button className="db-nav-button active">
@@ -373,7 +559,6 @@ const Dashboard = () => {
                   <tr>
                     <th>Username</th>
                     <th>Email</th>
-                    <th>Password</th>
                     <th>Role</th>
                     <th>Actions</th>
                   </tr>
@@ -383,7 +568,6 @@ const Dashboard = () => {
                     <tr key={user.id}>
                       <td>{user.username}</td>
                       <td>{user.email}</td>
-                      <td>{user.password}</td>
                       <td>{user.role}</td>
                       <td>
                         <button onClick={() => handleEditClick(user)} className="extra-user-button">Edit</button>

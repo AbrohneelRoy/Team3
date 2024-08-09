@@ -16,6 +16,8 @@ import nav6 from './logout.png';
 import nav66 from './logouthover.png';
 import nav7 from './gpt.png';
 import nav77 from './gpthover.png';
+import starFilled from './star.png'; // Make sure to add this image
+import starOutline from './star2.png'; // Make sure to add this image
 
 const Task = () => {
   const [hovered, setHovered] = useState(null);
@@ -29,6 +31,11 @@ const Task = () => {
   const [isAddingTask, setIsAddingTask] = useState(false);
   const [fadeOutTasks, setFadeOutTasks] = useState([]);
   const [isPlusSign, setIsPlusSign] = useState(true);
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const filteredTasks = tasks.filter(task =>
+    task.task.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -206,7 +213,7 @@ const Task = () => {
             onMouseLeave={() => setHovered(null)}
             onClick={routeTime}
           >
-            <img src={hovered === 'time' || isActive('/Timer') ? nav55 : nav5} alt="Timer" className="db-nav-icon" />Pomodoro Timer
+            <img src={hovered === 'time' || isActive('/Timer') ? nav55 : nav5} alt="Timer" className="db-nav-icon" />Pomodoro
           </button>  
           <button
             className={`db-nav-button ${isActive('/AIScheduler') ? 'active' : ''}`}
@@ -226,7 +233,15 @@ const Task = () => {
           </button>          
         </nav>
         <div className="task-content">
-          <h1>Task Management</h1>
+          <h1>To-Do List</h1>
+          <div className="task-search-bar">
+            <input
+              type="text"
+              placeholder="Search tasks..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
           {isAddingTask && (
             <div className="task-input-container">
               <input
@@ -257,48 +272,72 @@ const Task = () => {
               <span className="add-icon">{isPlusSign ? '+' : '-'}</span>
             </button>
 
-          <div className="task-list">
-            {tasks.map((task) => (
-              <div 
-                key={task.id} 
-                className={`task-list-item ${task.important ? 'important' : ''} ${fadeOutTasks.includes(task.id) ? 'fade-out' : ''}`}
-                onClick={(e) => handleTaskClick(e, task.id)}
-              >
-                <div className="task-checkbox-container">
-                  <input
-                    type="checkbox"
-                    onChange={() => handleCompleteTask(task.id)}
-                    className="task-checkbox"
-                  />
-                </div>
-                {editTaskId === task.id ? (
-                  <div className="task-edit-container">
-                    <input
-                      type="text"
-                      value={editTaskText}
-                      onChange={(e) => setEditTaskText(e.target.value)}
-                      className="task-edit-input"
-                    />
-                    <label className="task-important-label">
-                      <input
-                        type="checkbox"
-                        checked={editTaskImportant}
-                        onChange={() => setEditTaskImportant(!editTaskImportant)}
-                        className="important-checkbox"
-                      />
-                      Important
-                    </label>
-                    <button onClick={handleEditTask} className="task-save-button">Save</button>
-                    <button onClick={() => setEditTaskId(null)} className="task-cancel-button">Cancel</button>
-                  </div>
-                ) : (
-                  <span className="task-name">
-                    {task.task}
-                  </span>
-                )}
-              </div>
-            ))}
-          </div>
+            <div className="task-list">
+  {filteredTasks.map(task => (
+    <div
+      key={task.id}
+      className={`task-list-item ${task.important ? 'important' : ''} ${fadeOutTasks.includes(task.id) ? 'fade-out' : ''}`}
+      onClick={(e) => handleTaskClick(e, task.id)}
+    >
+      <div className="task-checkbox-container">
+        <input
+          type="checkbox"
+          checked={task.completed}
+          onChange={() => handleCompleteTask(task.id)}
+          className="task-checkbox"
+        />
+      </div>
+      {editTaskId === task.id ? (
+        <div className="task-edit-container">
+          <input
+            type="text"
+            value={editTaskText}
+            onChange={(e) => setEditTaskText(e.target.value)}
+            className="task-edit-input"
+          />
+          <button
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent triggering the parent onClick
+              setEditTaskImportant(prev => !prev);
+            }}
+            className="task-important-button"
+          >
+
+          </button>
+          <button onClick={handleEditTask} className="task-save-button">Save</button>
+          <button onClick={() => setEditTaskId(null)} className="task-cancel-button">Cancel</button>
+        </div>
+      ) : (
+        <span className="task-name">
+          {task.task}
+        </span>
+      )}
+      <button
+        onClick={(e) => {
+          e.stopPropagation(); // Prevent triggering the parent onClick
+          // Toggle task importance and update
+          const updatedTasks = tasks.map(t =>
+            t.id === task.id ? { ...t, important: !t.important } : t
+          );
+          setTasks(updatedTasks);
+          axios.put(`http://localhost:8080/api/tasks/${task.id}`, {
+            ...task,
+            important: !task.important
+          }).catch(error => console.error('Error updating task importance:', error));
+        }}
+        className="task-important-button"
+      >
+        <img
+          src={task.important ? starOutline : starFilled}
+          alt="Important"
+          className="star-icon"
+        />
+      </button>
+    </div>
+  ))}
+</div>
+
+
         </div>
       </div>
     </div>
