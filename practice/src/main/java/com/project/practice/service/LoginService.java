@@ -1,6 +1,7 @@
 package com.project.practice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.project.practice.model.Login;
 import com.project.practice.repository.LoginRepository;
@@ -14,7 +15,11 @@ public class LoginService {
     @Autowired
     private LoginRepository loginRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     public Login createLogin(Login login) {
+        login.setPassword(bCryptPasswordEncoder.encode(login.getPassword()));
         return loginRepository.save(login);
     }
 
@@ -49,7 +54,9 @@ public class LoginService {
         return loginRepository.findById(id).map(existingLogin -> {
             existingLogin.setUsername(login.getUsername());
             existingLogin.setEmail(login.getEmail());
-            existingLogin.setPassword(login.getPassword());
+            if (login.getPassword() != null && !login.getPassword().isEmpty()) {
+                existingLogin.setPassword(bCryptPasswordEncoder.encode(login.getPassword()));
+            }
             existingLogin.setRole(login.getRole());
             return loginRepository.save(existingLogin);
         });

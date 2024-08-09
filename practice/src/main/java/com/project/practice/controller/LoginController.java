@@ -3,6 +3,7 @@ package com.project.practice.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.project.practice.model.Login;
@@ -20,6 +21,9 @@ public class LoginController {
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping
     public ResponseEntity<?> createLogin(@RequestBody Login login) {
@@ -59,7 +63,7 @@ public class LoginController {
     @PostMapping("/check")
     public ResponseEntity<?> checkLogin(@RequestBody Login login) {
         Login existingLogin = loginService.findByUsername(login.getUsername());
-        if (existingLogin != null && existingLogin.getPassword().equals(login.getPassword())) {
+        if (existingLogin != null && bCryptPasswordEncoder.matches(login.getPassword(), existingLogin.getPassword())) {
             if ("admin".equals(existingLogin.getUsername().toLowerCase())) {
                 Map<String, Object> response = new HashMap<>();
                 response.put("success", true);
