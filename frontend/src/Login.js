@@ -33,7 +33,11 @@ const Login = () => {
       const result = await response.json();
       if (result.success) {
         localStorage.setItem('username', username);
-        navigate('/Dashboard');
+        if (result.isAdmin) {
+          navigate('/Admin'); // Route to Admin page if the user is an admin
+        } else {
+          navigate('/Dashboard'); // Route to Dashboard page otherwise
+        }
       } else {
         alert('Login failed: ' + result.message);
       }

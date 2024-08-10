@@ -10,6 +10,7 @@ import Calendar from './Calendar';
 import Notes from './Notes';
 import Timer from './Timer';
 import AIScheduler from './AIScheduler';
+import AdminPage from './AdminPage';
 
 function App() {
   return (
@@ -31,6 +32,14 @@ function App() {
           element={
             <AuthGuard>
               <Task />
+            </AuthGuard>
+          }
+        />
+        <Route
+          path="/Admin"
+          element={
+            <AuthGuard>
+              <AdminPage />
             </AuthGuard>
           }
         />
