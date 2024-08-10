@@ -16,7 +16,6 @@ import nav6 from './logout.png';
 import nav66 from './logouthover.png';
 import nav7 from './gpt.png';
 import nav77 from './gpthover.png';
-import profile from './profile.png';
 
 const Dashboard = () => {
   const [hovered, setHovered] = useState(null);
@@ -24,29 +23,20 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [userId, setUserId] = useState(null);
   const [role,setRole] = useState(null);
-  const [userData, setUserData] = useState(null);
-  const [error, setError] = useState(null);
   const [todaysEvents, setTodaysEvents] = useState([]);
   const [importantTasks, setImportantTasks] = useState([]);
   const [email, setEmail] = useState(null);
   const [quote, setQuote] = useState("");
   const [author, setAuthor] = useState("");
   const [loading, setLoading] = useState(true);
-  const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const [newUsername, setNewUsername] = useState('');
-  const [newEmail, setNewEmail] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [newRole, setNewRole] = useState('user');
-  const [isEditPopupVisible, setIsEditPopupVisible] = useState(false);
-  const [editUserId, setEditUserId] = useState(null);
-  const [editUsername, setEditUsername] = useState('');
-  const [editEmail, setEditEmail] = useState('');
-  const [editPassword, setEditPassword] = useState('');
-  const [editRole, setEditRole] = useState('user');
   const [showPopup, setShowPopup] = useState(false);
   const [showPasswordChange, setShowPasswordChange] = useState(false);
   const [userDetails, setUserDetails] = useState({});
   const [editedDetails, setEditedDetails] = useState({});
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [showAnalysisPopup, setShowAnalysisPopup] = useState(false);
+
+
 
   const loggedInUser = localStorage.getItem('username');
 
@@ -146,6 +136,9 @@ const Dashboard = () => {
   const routeGPT = () => {
     navigate('/AIScheduler');
   };
+  const routeHab = () => {
+    navigate('/Habit');
+  };
 
 
   const isActive = (path) => location.pathname === path;
@@ -214,24 +207,44 @@ const Dashboard = () => {
         localStorage.setItem('username', editedDetails.username);
       });
   };
+
+  const handleProfileClick = () => {
+    setIsDropdownVisible(!isDropdownVisible);
+  };
+  const handleProfileSelect = () => {
+    setShowPopup(true);
+    setIsDropdownVisible(false);
+  };
+
+  const handleAnalysisSelect = () => {
+    setShowAnalysisPopup(true);
+    setIsDropdownVisible(false);
+  };
   
 
 
 
   return (
         <div className="db-container">
-          <header className="db-header">
-        <div className="db-logo">Chrono Craft</div>
-        <div className="db-user-section">
-          <span className="db-username">{loggedInUser}</span>
-          <span
-            className="db-user-profile"
-            onClick={() => setShowPopup(true)}
-          >
-            {loggedInUser.charAt(0).toUpperCase()}
-          </span>
-        </div>
-      </header>
+    <header className="db-header">
+      <div className="db-logo">Chrono Craft</div>
+      <div className="db-user-section">
+        <span className="db-username">{loggedInUser}</span>
+        <span
+          className="db-user-profile"
+          onClick={handleProfileClick}
+        >
+          {loggedInUser.charAt(0).toUpperCase()}
+        </span>
+        {isDropdownVisible && (
+          <div className="dropdown-menu">
+            <button onClick={handleProfileSelect} className="dropdown-item">Profile</button>
+            <button onClick={handleAnalysisSelect} className="dropdown-item">Analysis</button>
+            <button onClick={handleLogout} className="dropdown-item logout-btn">Logout</button>
+          </div>
+        )}
+      </div>
+    </header>
       {showPopup && (
         <div className="user-popup">
           <div className="user-popup-content">
@@ -336,12 +349,12 @@ const Dashboard = () => {
                 <img src={hovered === 'gpt' || isActive('/AIScheduler') ? nav77 : nav7} alt="AIScheduler" className="db-nav-icon" />AIScheduler
               </button>
               <button
-                className={`db-nav-button ${isActive('/logout') ? 'active' : ''}`}
-                onMouseEnter={() => setHovered('logout')}
+                className={`db-nav-button ${isActive('/Habit') ? 'active' : ''}`}
+                onMouseEnter={() => setHovered('habit')}
                 onMouseLeave={() => setHovered(null)}
-                onClick={handleLogout}
+                onClick={routeHab}
               >
-                <img src={hovered === 'logout' || isActive('/logout') ? nav66 : nav6} alt="Logout" className="db-nav-icon" />Logout
+                <img src={hovered === 'habit' || isActive('/Habit') ? nav66 : nav6} alt="Habit" className="db-nav-icon" />Habit
               </button>
             </nav>
             <div className="db-content">

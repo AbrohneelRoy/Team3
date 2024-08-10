@@ -27,6 +27,12 @@ const Notes = () => {
   const [editingNote, setEditingNote] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const [showPopup, setShowPopup] = useState(false);
+  const [showPasswordChange, setShowPasswordChange] = useState(false);
+  const [userDetails, setUserDetails] = useState({});
+  const [editedDetails, setEditedDetails] = useState({});
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [showAnalysisPopup, setShowAnalysisPopup] = useState(false); 
   const loggedInUser = localStorage.getItem('username');
 
   const fetchUserInfo = async () => {
@@ -75,6 +81,10 @@ const Notes = () => {
 
   const routeTime = () => {
     navigate('/Timer');
+  };
+
+  const routeHab = () => {
+    navigate('/Habit');
   };
 
   const isActive = (path) => location.pathname === path;
@@ -142,12 +152,153 @@ const Notes = () => {
     });
   }, [loggedInUser, userId]);
 
+
+  useEffect(() => {
+    fetch(`http://localhost:8080/login/${userId}`)
+      .then(response => response.json())
+      .then(data => {
+        setUserDetails(data);
+        setEditedDetails({ username: data.username, email: data.email, password: '' });
+      });
+  }, [userId]);
+
+  const handleEditChange = (e, field) => {
+    setEditedDetails({ ...editedDetails, [field]: e.target.value });
+  };
+
+  const handleSave = () => {
+    // Update user details
+    fetch(`http://localhost:8080/login/${userId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...editedDetails, role: 'user' }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        setUserDetails(data);
+        setShowPopup(false); // Close popup after saving
+        localStorage.setItem('username', editedDetails.username);
+      });
+  };
+
+  const handleCancel = () => {
+    setEditedDetails({ username: userDetails.username, email: userDetails.email, password: '' });
+    setShowPopup(false);
+    setShowPasswordChange(false);
+  };
+
+  const handlePasswordChange = () => {
+    setShowPasswordChange(true);
+  };
+
+  const handlePasswordSave = () => {
+    // Update user details, including the new password
+    fetch(`http://localhost:8080/login/${userId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        username: editedDetails.username, 
+        email: editedDetails.email, 
+        password: editedDetails.password, 
+        role: 'user' 
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        setUserDetails(data); // Update the user details state with the new data
+        setShowPopup(false); // Close the popup
+        setShowPasswordChange(false); // Hide the password change input
+        localStorage.setItem('username', editedDetails.username);
+      });
+  };  
+
+const handleProfileClick = () => {
+    setIsDropdownVisible(!isDropdownVisible);
+  };
+  const handleProfileSelect = () => {
+    setShowPopup(true);
+    setIsDropdownVisible(false);
+  };
+
+  const handleAnalysisSelect = () => {
+    setShowAnalysisPopup(true);
+    setIsDropdownVisible(false);
+  };
+
+
   return (
     <div className="no-container">
-      <header className="no-header">
-        <div className="no-logo">Chrono Craft</div>
-        <span style={{ fontSize: '1.6em', color: '#18bc9c' }}>{loggedInUser}</span>
-      </header>
+ <header className="db-header">
+      <div className="db-logo">Chrono Craft</div>
+      <div className="db-user-section">
+        <span className="db-username">{loggedInUser}</span>
+        <span
+          className="db-user-profile"
+          onClick={handleProfileClick}
+        >
+          {loggedInUser.charAt(0).toUpperCase()}
+        </span>
+        {isDropdownVisible && (
+          <div className="dropdown-menu">
+            <button onClick={handleProfileSelect} className="dropdown-item">Profile</button>
+            <button onClick={handleAnalysisSelect} className="dropdown-item">Analysis</button>
+            <button onClick={handleLogout} className="dropdown-item logout-btn">Logout</button>
+          </div>
+        )}
+      </div>
+    </header>
+      {showPopup && (
+        <div className="user-popup">
+          <div className="user-popup-content">
+            <h3>User Profile</h3>
+            <label>
+              Username:
+              <input
+                type="text"
+                value={editedDetails.username}
+                onChange={(e) => handleEditChange(e, 'username')}
+                className="user-popup-input"
+              />
+            </label>
+            <label>
+              Email:
+              <input
+                type="email"
+                value={editedDetails.email}
+                onChange={(e) => handleEditChange(e, 'email')}
+                className="user-popup-input"
+              />
+            </label>
+
+            {!showPasswordChange && (
+              <button onClick={handlePasswordChange} className="change-password-btn">
+                Change Password
+              </button>
+            )}
+
+            {showPasswordChange && (
+              <label>
+                New Password:
+                <input
+                  type="password"
+                  value={editedDetails.password}
+                  onChange={(e) => handleEditChange(e, 'password')}
+                  className="user-popup-input"
+                />
+              </label>
+            )}
+
+            <div className="user-popup-actions">
+              {showPasswordChange ? (
+                <button onClick={handlePasswordSave} className="save-btn">Save Password</button>
+              ) : (
+                <button onClick={handleSave} className="save-btn">Save</button>
+              )}
+              <button onClick={handleCancel} className="cancel-btn">Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="no-main">
         <nav className="no-sidebar">
           <button
@@ -198,13 +349,13 @@ const Notes = () => {
             <img src={hovered === 'gpt' || isActive('/AIScheduler') ? nav77 : nav7} alt="AIScheduler" className="db-nav-icon" />AIScheduler
           </button>
           <button
-            className={`no-nav-button ${isActive('/logout') ? 'active' : ''}`}
-            onMouseEnter={() => setHovered('logout')}
-            onMouseLeave={() => setHovered(null)}
-            onClick={handleLogout}
-          >
-            <img src={hovered === 'logout' || isActive('/logout') ? nav66 : nav6} alt="Logout" className="no-nav-icon" /> Logout
-          </button>
+                className={`db-nav-button ${isActive('/Habit') ? 'active' : ''}`}
+                onMouseEnter={() => setHovered('habit')}
+                onMouseLeave={() => setHovered(null)}
+                onClick={routeHab}
+              >
+                <img src={hovered === 'habit' || isActive('/Habit') ? nav66 : nav6} alt="Habit" className="db-nav-icon" />Habit
+              </button>
         </nav>
         <div className="no-content">
           <h1>Notes Management</h1>

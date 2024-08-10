@@ -1,0 +1,226 @@
+/* Habit table container */
+.habit-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 30px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); /* Deep shadow for elevated look */
+    border-radius: 16px; /* More pronounced rounded corners */
+    overflow: hidden;
+    animation: fadeInTable 1s ease-in-out;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); /* Gradient background for depth */
+}
+
+/* Table header */
+.habit-table th {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); /* Gradient header background */
+    color: #ecf0f1; /* Light color for contrast */
+    font-weight: 700; /* Bolder text for prominence */
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 16px 20px;
+    border-bottom: 4px solid #1abc9c; /* Bolder accent border */
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.1); /* Inset shadow for depth */
+    transition: background 0.3s ease;
+}
+
+/* Table cells */
+.habit-table td {
+    color: #2c3e50; /* Darker text color for better readability */
+    border: 1px solid #c8d6e5; /* Subtle, light blue-gray border */
+    padding: 16px 20px; /* Increased padding for a more spacious feel */
+    text-align: center;
+    border-left: 2px solid #f1f1f1; /* Vertical lines for separation */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    background-color: transparent; /* Allow row background color to show */
+}
+
+/* Table rows */
+.habit-table tr:nth-child(odd) {
+    background-color: #defaf6; /* Light cyan for odd rows */
+}
+
+.habit-table tr:nth-child(even) {
+    background-color: #f7fffd; /* Light green for even rows */
+}
+
+.habit-table tr:hover {
+    background-color: #eaf3f3; /* Light blue on hover */
+    transform: translateY(-.5px);
+    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow for depth */
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+}
+
+/* Keyframe animation for fade-in effect */
+@keyframes fadeInTable {
+    0% {
+        opacity: 0;
+        transform: translateY(20px); /* Start from below */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* End at normal position */
+    }
+}
+
+
+/* Habit Tracker Title */
+.habit-title {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+  }
+  
+  /* Container for input and button */
+  .habit-input-container {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+  }
+  
+  /* Habit input field */
+  .habit-input {
+    padding: 12px 20px;
+    font-size: 1rem;
+    border: 2px solid #18bc9c;
+    border-radius: 8px;
+    outline: none;
+    width: 300px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .habit-input:focus {
+    border-color: #1abc9c;
+    box-shadow: 0 0 8px rgba(26, 188, 156, 0.5);
+  }
+  
+  /* Add habit button */
+  .habit-add-button {
+    padding: 12px 20px;
+    font-size: 1rem;
+    color: #ffffff;
+    background-color: #18bc9c;
+    border: none;
+    border-radius: 8px;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .habit-add-button:hover {
+    background-color: #1abc9c;
+    transform: translateY(-2px);
+  }
+  
+  .habit-add-button:active {
+    background-color: #16a085;
+  }
+  
+  
+/* Checkbox styling */
+.habit-table input[type="checkbox"] {
+    cursor: pointer; /* Pointer cursor on hover */
+    accent-color: #18bc9c; /* Checkbox color */
+    width: 20px; /* Increase width for better visibility */
+    height: 20px; /* Increase height for better visibility */
+    border-radius: 4px; /* Rounded corners for the checkbox */
+    border: 2px solid #ddd; /* Light border for unselected checkboxes */
+    background-color: #fff; /* White background */
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+  }
+  
+  /* Checkbox checked state */
+  .habit-table input[type="checkbox"]:checked {
+    background-color: #18bc9c; /* Checkbox color when checked */
+    border-color: #18bc9c; /* Border color when checked */
+    transform: scale(1.15); /* Slightly enlarge checked checkboxes */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect for a lifted appearance */
+  }
+  
+  /* Checkbox focus state */
+  .habit-table input[type="checkbox"]:focus {
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 0 4px rgba(24, 188, 156, 0.3); /* Subtle focus shadow */
+  }
+  
+  .progress-container {
+    width: 60px; /* Increase width for better visibility */
+    height: 60px; /* Increase height for better visibility */
+    margin: 0 auto; /* Center align progress bar */
+    overflow: hidden; /* Hide overflow for circular shape */
+    position: relative; /* Position relative for absolute children */
+  }
+
+  /* Progress bar */
+.progress-container::before {
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #18bc9c; /* Progress bar color */
+    border-radius: 50%; /* Circular shape */
+    transform: scaleY(1); /* Full height */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect for a lifted appearance */
+  }
+
+  .progress-container .progress-bar {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff; /* Background color of the progress bar container */
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scaleY(0); /* Start from zero height */
+    transition: transform 0.3s ease; /* Smooth expansion */
+  }
+  
+
+  /* Example of progress bar completion animation */
+.progress-container.completed .progress-bar {
+    transform: translate(-50%, -50%) scaleY(1); /* Expand to full height */
+  }
+  
+  /* Button styling */
+  .habit-table button {
+    background-color: #18bc9c; /* Button background color */
+    color: #ffffff; /* Button text color */
+    border: none; /* Remove default border */
+    padding: 10px 15px; /* Padding inside the button */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 0.9em; /* Slightly smaller font size */
+    border-radius: 8px; /* Smooth corners for button */
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+  }
+  
+  .habit-table button:hover {
+    background-color: #16a085; /* Darker shade on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+  }
+  
+  .habit-table button:active {
+    background-color: #148f77; /* Even darker shade on click */
+    transform: scale(0.98); /* Slightly shrink button on click */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reduced shadow on click */
+  }
+  
+  /* Animation keyframes */
+  @keyframes fadeInTable {
+    0% {
+      opacity: 0;
+      transform: translateY(50px); /* Start from below */
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0); /* Move up */
+    }
+  }
+  

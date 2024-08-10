@@ -11,6 +11,7 @@ import Notes from './Notes';
 import Timer from './Timer';
 import AIScheduler from './AIScheduler';
 import AdminPage from './AdminPage';
+import HabitTracker from './HabitTracker';
 
 function App() {
   return (
@@ -32,6 +33,14 @@ function App() {
           element={
             <AuthGuard>
               <Task />
+            </AuthGuard>
+          }
+        />
+        <Route
+          path="/Habit"
+          element={
+            <AuthGuard>
+              <HabitTracker />
             </AuthGuard>
           }
         />

@@ -2,20 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import './Dashboard.css';
-import nav1 from './home.png';
-import nav11 from './homehover.png';
-import nav2 from './calendar.png';
-import nav22 from './calendarhover.png';
-import nav3 from './task.png';
-import nav33 from './taskhoover.png';
-import nav4 from './note.png';
-import nav44 from './notehover.png';
-import nav5 from './timer.png';
-import nav55 from './timerhover.png';
+
 import nav6 from './logout.png';
 import nav66 from './logouthover.png';
-import nav7 from './gpt.png';
-import nav77 from './gpthover.png';
+
 import profile from './profile.png';
 
 const AdminPage = () => {
@@ -23,15 +13,10 @@ const AdminPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [userId, setUserId] = useState(null);
-    const [role,setRole] = useState(null);
     const [userData, setUserData] = useState(null);
     const [error, setError] = useState(null);
-    const [todaysEvents, setTodaysEvents] = useState([]);
-    const [importantTasks, setImportantTasks] = useState([]);
-    const [email, setEmail] = useState(null);
-    const [quote, setQuote] = useState("");
-    const [author, setAuthor] = useState("");
-    const [loading, setLoading] = useState(true);
+
+
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const [newUsername, setNewUsername] = useState('');
     const [newEmail, setNewEmail] = useState('');
@@ -47,6 +32,8 @@ const AdminPage = () => {
     const [showPasswordChange, setShowPasswordChange] = useState(false);
     const [userDetails, setUserDetails] = useState({});
     const [editedDetails, setEditedDetails] = useState({});
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+    const [showAnalysisPopup, setShowAnalysisPopup] = useState(false);
   
     const loggedInUser = localStorage.getItem('username');
   
@@ -61,8 +48,6 @@ const AdminPage = () => {
   
         if (currentUser) {
           setUserId(currentUser.id);
-          setEmail(currentUser.email);
-          setRole(currentUser.role);
         } else {
           console.error('User not found in API response');
         }
@@ -249,22 +234,43 @@ const AdminPage = () => {
           localStorage.setItem('username', editedDetails.username);
         });
     };
+
+    const handleProfileClick = () => {
+        setIsDropdownVisible(!isDropdownVisible);
+      };
+      const handleProfileSelect = () => {
+        setShowPopup(true);
+        setIsDropdownVisible(false);
+      };
+    
+      const handleAnalysisSelect = () => {
+        setShowAnalysisPopup(true);
+        setIsDropdownVisible(false);
+      };
+      
     
 
     return(
         <div className="db-container">
-        <header className="db-header">
-        <div className="db-logo">Chrono Craft</div>
-        <div className="db-user-section">
-          <span className="db-username">{loggedInUser}</span>
-          <span
-            className="db-user-profile"
-            onClick={() => setShowPopup(true)}
-          >
-            {loggedInUser.charAt(0).toUpperCase()}
-          </span>
-        </div>
-      </header>
+ <header className="db-header">
+      <div className="db-logo">Chrono Craft</div>
+      <div className="db-user-section">
+        <span className="db-username">{loggedInUser}</span>
+        <span
+          className="db-user-profile"
+          onClick={handleProfileClick}
+        >
+          {loggedInUser.charAt(0).toUpperCase()}
+        </span>
+        {isDropdownVisible && (
+          <div className="dropdown-menu">
+            <button onClick={handleProfileSelect} className="dropdown-item">Profile</button>
+            <button onClick={handleAnalysisSelect} className="dropdown-item">Analysis</button>
+            <button onClick={handleLogout} className="dropdown-item logout-btn">Logout</button>
+          </div>
+        )}
+      </div>
+    </header>
       {showPopup && (
         <div className="user-popup">
           <div className="user-popup-content">
